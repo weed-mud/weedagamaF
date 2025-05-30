@@ -1,0 +1,95 @@
+<!-- views/contact.ejs -->
+<section class="page-header">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>Get in touch with our team - we'd love to hear from you</p>
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p>Whether you have questions about our programs, want to learn more about applying for support, or are interested in partnering with us, we're here to help.</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@weedagamafoundation.org</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>New York, NY<br>United States</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="office-hours">
+                    <h4>Corporate Donation Matching</h4>
+                    <p>We participate in corporate donation matching through <a href=https://benevity.com/> Benevity</a>. </p>
+                </div>
+            </div>
+            
+            <div class="contact-form-container">
+                <% if (typeof success !== 'undefined') { %>
+                    <div class="alert alert-success">
+                        <%= success %>
+                    </div>
+                <% } %>
+                
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
+                
+                <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                    <div class="alert alert-error">
+                        <ul>
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+                
+                <form action="/contact" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" 
+                               value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" 
+                               value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" 
+                               value="<%= typeof formData !== 'undefined' ? formData.subject || '' : '' %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="6" 
+                                  placeholder="Tell us how we can help you..." required><%= typeof formData !== 'undefined' ? formData.message || '' : '' %></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

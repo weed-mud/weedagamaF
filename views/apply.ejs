@@ -1,0 +1,104 @@
+<!-- views/apply.ejs -->
+<section class="page-header">
+    <div class="container">
+        <h1>Apply for Support</h1>
+        <p>Submit an application for educational, medical, or community support</p>
+    </div>
+</section>
+
+<section class="application-form-section">
+    <div class="container">
+        <div class="form-container">
+            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <div class="alert alert-error">
+                    <ul>
+                        <% errors.forEach(error => { %>
+                            <li><%= error.msg %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <% if (typeof error !== 'undefined') { %>
+                <div class="alert alert-error">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <form action="/apply" method="POST" class="application-form">
+                <div class="form-section">
+                    <h2>School/Organization Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="school_name">School/Organization Name *</label>
+                        <input type="text" id="school_name" name="school_name" 
+                               value="<%= typeof formData !== 'undefined' ? formData.school_name || '' : '' %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="principal_name">Principal/Contact Person Name *</label>
+                        <input type="text" id="principal_name" name="principal_name" 
+                               value="<%= typeof formData !== 'undefined' ? formData.principal_name || '' : '' %>" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Full Address *</label>
+                        <textarea id="address" name="address" rows="3" required><%= typeof formData !== 'undefined' ? formData.address || '' : '' %></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student_count">Number of Students/Beneficiaries *</label>
+                        <input type="number" id="student_count" name="student_count" min="1" 
+                               value="<%= typeof formData !== 'undefined' ? formData.student_count || '' : '' %>" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Support Request Details</h2>
+                    
+                    <div class="form-group">
+                        <label for="request_type">Type of Support Requested *</label>
+                        <select id="request_type" name="request_type" required>
+                            <option value="">Select type of support</option>
+                            <option value="education">Educational Supplies & Resources</option>
+                            <option value="medical">Medical Equipment & Supplies</option>
+                            <option value="food">Food & Nutrition Programs</option>
+                            <option value="infrastructure">Infrastructure & Housing</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount_requested">Estimated Amount Needed (USD)</label>
+                        <input type="number" id="amount_requested" name="amount_requested" min="0" step="0.01">
+                        <small>Optional - provide if you have a specific budget in mind</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Detailed Description of Need *</label>
+                        <textarea id="description" name="description" rows="6" 
+                                  placeholder="Please describe your specific needs, how the support will be used, and the expected impact on your community..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                    <p class="form-note">We will review your application and contact you within 5-7 business days.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

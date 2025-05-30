@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Weedagama Foundation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-layout">
+        <nav class="admin-nav">
+            <div class="admin-brand">
+                <h2>Foundation Admin</h2>
+            </div>
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="/admin/stats"><i class="fas fa-chart-bar"></i> Manage Stats</a></li>
+                <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Dashboard</h1>
+                <p>Welcome to the Weedagama Foundation Admin Panel</p>
+            </header>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3><%= pendingApplications %></h3>
+                        <p>Pending Applications</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-blog"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3><%= totalPosts %></h3>
+                        <p>Blog Posts</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3><%= stats.students_helped || 0 %></h3>
+                        <p>Students Helped</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3><%= stats.schools_supported || 0 %></h3>
+                        <p>Schools Supported</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-grid">
+                    <a href="/admin/applications" class="action-card">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Review Applications</h3>
+                        <p>Review and manage support applications</p>
+                    </a>
+                    
+                    <a href="/admin/blog/new" class="action-card">
+                        <i class="fas fa-plus"></i>
+                        <h3>Create Blog Post</h3>
+                        <p>Share news and updates with the community</p>
+                    </a>
+                    
+                    <a href="/admin/stats" class="action-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Update Stats</h3>
+                        <p>Manage homepage statistics</p>
+                    </a>
+                    
+                    <a href="/" class="action-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>View Website</h3>
+                        <p>Visit the public website</p>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="admin-recent-section">
+                <h2>Homepage Statistics</h2>
+                <div class="stats-summary">
+                    <div class="summary-item">
+                        <span class="label">Communities Reached:</span>
+                        <span class="value"><%= stats.communities_reached || 0 %></span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Meals Served:</span>
+                        <span class="value"><%= (stats.meals_served || 0).toLocaleString() %></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

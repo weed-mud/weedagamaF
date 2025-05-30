@@ -1,0 +1,131 @@
+<!-- Setup Instructions -->
+<!-- README.md -->
+# Weedagama Foundation Website
+
+A modern, responsive website for the Weedagama Foundation built with Node.js, Express, and EJS.
+
+## Features
+
+- **Responsive Design**: Mobile-first approach with modern CSS
+- **Application System**: Schools can apply for support online
+- **Blog Management**: Create and manage news posts and updates
+- **Admin Dashboard**: Secure admin panel for managing applications and content
+- **Contact Forms**: Easy communication with the foundation
+- **Stats Display**: Showcase impact metrics and achievements
+- **SQLite Database**: Lightweight database for storing applications and blog posts
+
+## Installation
+
+1. **Clone or create the project directory**
+```bash
+mkdir weedagama-foundation
+cd weedagama-foundation
+```
+
+2. **Initialize the project and install dependencies**
+```bash
+npm init -y
+npm install express ejs express-validator nodemailer multer sqlite3 bcrypt express-session helmet morgan
+npm install --save-dev nodemon
+```
+
+3. **Create the directory structure**
+```bash
+mkdir views views/admin public public/css public/js public/images
+```
+
+4. **Copy all the provided files into their respective directories**
+- `server.js` in the root directory
+- EJS templates in the `views` directory
+- CSS files in `public/css`
+- JavaScript files in `public/js`
+
+5. **Add placeholder images to public/images/**
+- hero-image.jpg
+- logo.png
+- school-project.jpg
+- medical-donation.jpg
+- food-initiative.jpg
+- default-post.jpg
+- education-project.jpg
+- healthcare-project.jpg
+- nutrition-project.jpg
+- housing-project.jpg
+- about-foundation.jpg
+
+6. **Set up environment variables (optional)**
+Create a `.env` file:
+```
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-password
+PORT=3000
+```
+
+## Running the Application
+
+1. **Development mode**
+```bash
+npm run dev
+```
+
+2. **Production mode**
+```bash
+npm start
+```
+
+The website will be available at `http://localhost:3000`
+
+## Admin Access
+
+- URL: `http://localhost:3000/admin/login`
+- Username: `admin`
+- Password: `admin123`
+To change the password 
+Run: node change-password.js yourNewPassword123
+
+## Key Features
+
+### Public Pages
+- **Home**: Hero section, stats, mission overview, latest news
+- **About**: Foundation story, values, team information
+- **Projects**: Showcase of current and completed projects
+- **Apply**: Application form for schools and organizations
+- **Blog**: News and updates from the foundation
+- **Contact**: Contact form and foundation information
+
+### Admin Panel
+- **Dashboard**: Overview of applications and blog posts
+- **Applications**: Review and manage support requests
+- **Blog Management**: Create, edit, and publish blog posts
+- **User Authentication**: Secure login system
+
+## Customization
+
+1. **Update Foundation Information**: Edit the content in the EJS templates
+2. **Add Images**: Replace placeholder images with actual foundation photos
+3. **Modify Styles**: Update CSS variables in `public/css/style.css`
+4. **Email Configuration**: Set up nodemailer with your email provider
+5. **Database**: The SQLite database is created automatically on first run
+
+## Deployment
+
+For production deployment:
+
+1. Set up a proper web server (nginx, Apache)
+2. Use PM2 for process management
+3. Set up SSL certificates
+4. Configure environment variables
+5. Set up database backups
+6. Enable logging and monitoring
+
+## Security Notes
+
+- Change the default admin password immediately
+- Use strong session secrets in production
+- Enable HTTPS in production
+- Regularly update dependencies
+- Implement rate limiting for forms
+
+## Support
+
+For questions or support with this website, please contact the development team or refer to the documentation.

@@ -1,0 +1,218 @@
+<!-- views/index.ejs -->
+<% layout = 'layout' %>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-image">
+            <img src="/images/hero-image.png" alt="Children in classroom">
+        </div>
+        <h1>Empowering <span class="hero-highlight">Tomorrow's Leaders</span> Through Education Support & Care</h1>
+        <p>We support underserved K-5 schools in Sri Lanka with comprehensive programs in education, 
+                technology, nutrition, hygiene, and leadership development — reaching every child regardless 
+                of background or belief since 2023</p>
+        <div class="hero-buttons">
+            <a href="/apply" class="btn btn-primary">Apply for Support</a>
+            <a href="/about" class="btn btn-secondary">Learn More</a>
+        </div>
+    </div>
+
+</section>
+
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.schoolsSupported %></div>
+                <div class="stat-label">Schools Supported</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.studentsHelped.toLocaleString() %></div>
+                <div class="stat-label">Students Helped</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.mealsServed.toLocaleString() %></div>
+                <div class="stat-label">Meals Served</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.communitiesReached %></div>
+                <div class="stat-label">Communities Reached</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mission-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Mission</h2>
+            <p>Creating lasting change through targeted long-term support and school community empowerment</p>
+        </div>
+        <div class="mission-grid">
+            <!-- Card 1 -->
+            <div class="mission-card">
+                <div class="mission-card-inner">
+                    <div class="mission-card-front">
+                        <div class="mission-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Education & School Supplies</h3>
+                        <p class="card-summary">Essential educational resources and infrastructure improvements for underserved schools.</p>
+                        <div class="flip-hint">Learn more</div>
+                    </div>
+                    <div class="mission-card-back">
+                        <h3>Education & School Supplies</h3>
+                        <p>We provide comprehensive educational support including:</p>
+                        <ul>
+                            <li>School supplies and learning materials</li>
+                            <li>Infrastructure improvements and repairs</li>
+                            <li>Educational resources and textbooks</li>
+                            <li>Classroom furniture and equipment</li>
+                            <li>Library development and books</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="mission-card">
+                <div class="mission-card-inner">
+                    <div class="mission-card-front">
+                        <div class="mission-icon">
+                            <i class="fas fa-soap"></i>
+                        </div>
+                        <h3>Hygiene & Clean Environment</h3>
+                        <p class="card-summary">Creating healthy and clean learning environments for students and teachers.</p>
+                        <div class="flip-hint">Learn more</div>
+                    </div>
+                    <div class="mission-card-back">
+                        <h3>Hygiene & Clean Environment</h3>
+                        <p>We focus on improving health and cleanliness through:</p>
+                        <ul>
+                            <li>Clean lavatories</li>
+                            <li>Medical tests (dental, vision, ..)</li>
+                            <li>Water supply improvements</li>
+                            <li>School gardens</li>
+                            <li>Classroom and furniture painting</li>
+                            <li>Monthly haircuts for students</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="mission-card">
+                <div class="mission-card-inner">
+                    <div class="mission-card-front">
+                        <div class="mission-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Student & Teacher Nutrition</h3>
+                        <p class="card-summary">Ensuring proper nutrition for better learning and health outcomes.</p>
+                        <div class="flip-hint">Learn more</div>
+                    </div>
+                    <div class="mission-card-back">
+                        <h3>Student & Teacher Nutrition</h3>
+                        <p>Our nutrition programs include:</p>
+                        <ul>
+                            <li>Daily meals prepared by parents or approved third parties</li>
+                            <li>Government-approved meal programs</li>
+                            <li>Special occasion meals (Children's Day, etc.)</li>
+                            <li>Nutritional education and awareness</li>
+                            <li>Kitchen equipment and supplies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="mission-card">
+                <div class="mission-card-inner">
+                    <div class="mission-card-front">
+                        <div class="mission-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3>Technology Resources</h3>
+                        <p class="card-summary">Modern technology access to enhance learning and digital literacy.</p>
+                        <div class="flip-hint">Learn more</div>
+                    </div>
+                    <div class="mission-card-back">
+                        <h3>Technology Resources</h3>
+                        <p>We provide digital learning tools including:</p>
+                        <ul>
+                            <li>Internet connection funding</li>
+                            <li>Computers, laptops, and projectors</li>
+                            <li>Audio equipment (speakers and microphones)</li>
+                            <li>Educational software subscriptions</li>
+                            <li>Digital literacy training</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="mission-card">
+                <div class="mission-card-inner">
+                    <div class="mission-card-front">
+                        <div class="mission-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Leadership & Life Skills</h3>
+                        <p class="card-summary">Developing future leaders through comprehensive skill-building programs.</p>
+                        <div class="flip-hint">Learn more</div>
+                    </div>
+                    <div class="mission-card-back">
+                        <h3>Leadership & Life Skills</h3>
+                        <p>Our development programs offer:</p>
+                        <ul>
+                            <li>External educational programs (computer, English, programming)</li>
+                            <li>Musical and sports instruments</li>
+                            <li>Sports and athletic events support</li>
+                            <li>Educational trips (museums, botanical gardens)</li>
+                            <li>Leadership training and mentorship</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="news-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Latest News & Updates</h2>
+            <p>Stay informed about our ongoing projects and community impact</p>
+        </div>
+        <div class="news-grid">
+            <% posts.forEach(post => { %>
+            <article class="news-card">
+                <div class="news-image">
+                    <img src="<%= post.image_url || '/images/default-post.jpg' %>" alt="<%= post.title %>">
+                </div>
+                <div class="news-content">
+                    <h3><%= post.title %></h3>
+                    <p><%= post.content.substring(0, 150) %>...</p>
+                    <div class="news-meta">
+                        <span class="author">By <%= post.author %></span>
+                        <span class="date"><%= new Date(post.created_at).toLocaleDateString() %></span>
+                    </div>
+                    <a href="/blog/<%= post.id %>" class="read-more">Read More</a>
+                </div>
+            </article>
+            <% }) %>
+        </div>
+        <div class="section-footer">
+            <a href="/blog" class="btn btn-outline">View All News</a>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Make a Difference at Your School?</h2>
+            <p>Join us in creating positive change in communities that need it most. We're here to help.</p>
+            <a href="/apply" class="btn btn-primary">Apply for Support</a>
+        </div>
+    </div>
+</section>

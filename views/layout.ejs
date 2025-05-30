@@ -1,0 +1,82 @@
+<!-- views/layout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Weedagama Foundation' %></title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="/images/logo.png" alt="Weedagama Foundation" class="logo">
+                <span class="brand-text">Weedagama Foundation</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/projects" class="nav-link">Projects</a>
+                <a href="/blog" class="nav-link">News</a>
+                <a href="/apply" class="nav-link apply-btn">Apply for Support</a>
+                <a href="/contact" class="nav-link">Contact</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <%- body %>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Weedagama Foundation</h3>
+                <p>Supporting education, healthcare, and basic needs for underserved communities worldwide.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/projects">Our Projects</a></li>
+                    <li><a href="/apply">Apply for Support</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Focus Areas</h4>
+                <ul>
+                    <li>Education & School Supplies</li>
+                    <li>Hygiene & Clean Environment</li>
+                    <li>Food Security & Nutrition</li>
+                    <li>Technology Resources</li>
+                    <li>Leadership & Life Skills</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p><i class="fas fa-envelope"></i> info@weedagamafoundation.org</p>
+                <p><i class="fas fa-map-marker-alt"></i> New York, NY</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Weedagama Foundation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

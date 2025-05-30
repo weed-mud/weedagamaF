@@ -1,0 +1,83 @@
+<!-- views/admin/blog-form.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post ? 'Edit' : 'New' %> Blog Post - Weedagama Foundation Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-layout">
+        <nav class="admin-nav">
+            <div class="admin-brand">
+                <h2>Foundation Admin</h2>
+            </div>
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/blog" class="active"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <div>
+                    <h1><%= post ? 'Edit' : 'Create New' %> Blog Post</h1>
+                    <p>Share news and updates with your community</p>
+                </div>
+                <div>
+                    <a href="/admin/blog" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Back to Posts
+                    </a>
+                </div>
+            </header>
+            
+            <div class="form-container">
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
+                
+                <form action="/admin/blog" method="POST" class="blog-form">
+                    <div class="form-group">
+                        <label for="title">Post Title *</label>
+                        <input type="text" id="title" name="title" 
+                               value="<%= post ? post.title : '' %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="author">Author *</label>
+                        <input type="text" id="author" name="author" 
+                               value="<%= post ? post.author : 'Foundation Team' %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image_url">Featured Image URL</label>
+                        <input type="url" id="image_url" name="image_url" 
+                               value="<%= post ? post.image_url || '' : '' %>"
+                               placeholder="https://example.com/image.jpg">
+                        <small>Optional - URL to the featured image for this post</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content">Post Content *</label>
+                        <textarea id="content" name="content" rows="12" 
+                                  placeholder="Write your blog post content here..." required><%= post ? post.content : '' %></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> <%= post ? 'Update' : 'Publish' %> Post
+                        </button>
+                        <a href="/admin/blog" class="btn btn-outline">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

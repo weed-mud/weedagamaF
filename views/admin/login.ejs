@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Weedagama Foundation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="login-form-container">
+            <div class="login-header">
+                <h1>Admin Login</h1>
+                <p>Weedagama Foundation Management System</p>
+            </div>
+            
+            <% if (typeof error !== 'undefined') { %>
+                <div class="alert alert-error">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <form action="/admin/login" method="POST" class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required value="admin">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="loginBtn">
+                        <span class="btn-text">Login</span>
+                        <span class="btn-spinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> Logging in...
+                        </span>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <a href="/">← Back to Website</a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text-light);">
+                Default: admin / admin123
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    .admin-login-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1e4080 100%);
+    }
+    
+    .login-form-container {
+        background: var(--white);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .login-header h1 {
+        color: var(--text-dark);
+        margin-bottom: 10px;
+    }
+    
+    .login-header p {
+        color: var(--text-light);
+    }
+    
+    .login-form .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .login-footer {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .login-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    .login-footer a:hover {
+        text-decoration: underline;
+    }
+    
+    #loginBtn {
+        width: 100%;
+        position: relative;
+    }
+    
+    .btn-spinner {
+        display: none;
+    }
+    
+    #loginBtn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    </style>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = loginBtn.querySelector('.btn-text');
+        const btnSpinner = loginBtn.querySelector('.btn-spinner');
+        
+        loginForm.addEventListener('submit', function(e) {
+            console.log('Login form submitted'); // Debug log
+            
+            // Validate form
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                e.preventDefault();
+                alert('Please enter both username and password');
+                return;
+            }
+            
+            // Show loading state
+            btnText.style.display = 'none';
+            btnSpinner.style.display = 'inline';
+            loginBtn.disabled = true;
+            
+            console.log('Form validation passed, submitting...'); // Debug log
+            
+            // Reset loading state after 10 seconds as fallback
+            setTimeout(function() {
+                btnText.style.display = 'inline';
+                btnSpinner.style.display = 'none';
+                loginBtn.disabled = false;
+                console.log('Reset button state after timeout'); // Debug log
+            }, 10000);
+        });
+        
+        // Debug: Log when page loads
+        console.log('Login page loaded');
+        console.log('Form action:', loginForm.action);
+        console.log('Form method:', loginForm.method);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Weedagama Foundation Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .stats-form-container {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .stats-preview {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        
+        .stats-preview h3 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+        
+        .preview-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .preview-stat {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .preview-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+        
+        .preview-label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <nav class="admin-nav">
+            <div class="admin-brand">
+                <h2>Foundation Admin</h2>
+            </div>
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="/admin/stats" class="active"><i class="fas fa-chart-bar"></i> Manage Stats</a></li>
+                <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Manage Homepage Statistics</h1>
+                <p>Update the statistics displayed on the homepage</p>
+            </header>
+            
+            <% if (success) { %>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> Statistics updated successfully!
+            </div>
+            <% } %>
+            
+            <div class="stats-form-container">
+                <form action="/admin/stats" method="POST" class="stats-form">
+                    <div class="form-section">
+                        <h2>Foundation Impact Statistics</h2>
+                        <p class="form-note">These numbers will be displayed on the homepage to showcase the foundation's impact.</p>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="schools_supported">
+                                    <i class="fas fa-school"></i> Schools Supported
+                                </label>
+                                <input type="number" 
+                                       id="schools_supported" 
+                                       name="schools_supported" 
+                                       value="<%= stats.schools_supported || 0 %>" 
+                                       min="0" 
+                                       required>
+                                <small>Number of schools the foundation has helped</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="students_helped">
+                                    <i class="fas fa-users"></i> Students Helped
+                                </label>
+                                <input type="number" 
+                                       id="students_helped" 
+                                       name="students_helped" 
+                                       value="<%= stats.students_helped || 0 %>" 
+                                       min="0" 
+                                       required>
+                                <small>Total number of students impacted</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="meals_served">
+                                    <i class="fas fa-utensils"></i> Meals Served
+                                </label>
+                                <input type="number" 
+                                       id="meals_served" 
+                                       name="meals_served" 
+                                       value="<%= stats.meals_served || 0 %>" 
+                                       min="0" 
+                                       required>
+                                <small>Total meals provided to students</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="communities_reached">
+                                    <i class="fas fa-map-marker-alt"></i> Communities Reached
+                                </label>
+                                <input type="number" 
+                                       id="communities_reached" 
+                                       name="communities_reached" 
+                                       value="<%= stats.communities_reached || 0 %>" 
+                                       min="0" 
+                                       required>
+                                <small>Number of communities served</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-save"></i> Update Statistics
+                        </button>
+                        <a href="/admin/dashboard" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+                
+                <div class="stats-preview">
+                    <h3>Preview</h3>
+                    <p>This is how the statistics will appear on the homepage:</p>
+                    <div class="preview-stats">
+                        <div class="preview-stat">
+                            <div class="preview-number" id="preview-schools"><%= stats.schools_supported || 0 %></div>
+                            <div class="preview-label">Schools Supported</div>
+                        </div>
+                        <div class="preview-stat">
+                            <div class="preview-number" id="preview-students"><%= (stats.students_helped || 0).toLocaleString() %></div>
+                            <div class="preview-label">Students Helped</div>
+                        </div>
+                        <div class="preview-stat">
+                            <div class="preview-number" id="preview-meals"><%= (stats.meals_served || 0).toLocaleString() %></div>
+                            <div class="preview-label">Meals Served</div>
+                        </div>
+                        <div class="preview-stat">
+                            <div class="preview-number" id="preview-communities"><%= stats.communities_reached || 0 %></div>
+                            <div class="preview-label">Communities Reached</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/js/admin-stats.js"></script>
+</body>
+</html>
