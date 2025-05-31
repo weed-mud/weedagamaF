@@ -10,7 +10,18 @@
     <div class="container">
         <% if (projects && projects.length > 0) { %>
             <div class="projects-grid">
-                <% projects.forEach(project => { %>
+                <% projects.forEach(project => { 
+                    let customStats = [];
+                    if (project.custom_stats) {
+                        try {
+                            customStats = typeof project.custom_stats === 'string' 
+                                ? JSON.parse(project.custom_stats) 
+                                : project.custom_stats;
+                        } catch(e) {
+                            customStats = [];
+                        }
+                    }
+                %>
                 <div class="project-card">
                     <% if (project.image_url) { %>
                     <div class="project-image">
@@ -39,6 +50,12 @@
                                 <span class="label">Invested</span>
                             </div>
                             <% } %>
+                            <% customStats.forEach(stat => { %>
+                            <div class="stat">
+                                <span class="number"><%= stat.value %></span>
+                                <span class="label"><%= stat.label %></span>
+                            </div>
+                            <% }) %>
                         </div>
                     </div>
                 </div>

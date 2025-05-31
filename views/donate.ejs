@@ -1,0 +1,141 @@
+<!-- views/donate.ejs -->
+<section class="page-header">
+    <div class="container">
+        <h1>Support Our Mission</h1>
+        <p>Join us in making a lasting impact on communities worldwide</p>
+    </div>
+</section>
+
+<section class="donate-section">
+    <div class="container">
+        <div class="donate-intro">
+            <h2>Thank You for Your Interest in Supporting Our Work</h2>
+            <p>The Weedagama Foundation is currently in its pilot phase, with all funding generously provided by our founder and corporate matching programs. While we are not yet accepting individual donations, we deeply appreciate your interest in supporting our mission.</p>
+        </div>
+
+        <div class="donate-options">
+            <!-- Corporate Matching Section -->
+            <div class="donate-card active">
+                <div class="card-header">
+                    <i class="fas fa-building"></i>
+                    <h3>Corporate Matching Programs</h3>
+                    <span class="badge badge-active">Available Now</span>
+                </div>
+                <div class="card-content">
+                    <p>If your employer offers a charitable matching program, you can multiply your impact by designating the Weedagama Foundation as your charity of choice.</p>
+                    
+                    <div class="benevity-info">
+                        <h4><i class="fas fa-check-circle"></i> We're on Benevity!</h4>
+                        <p>The Weedagama Foundation is registered and approved with <strong>Benevity</strong> (benevity.com), making it easy for you to donate through your company's matching program.</p>
+                        <a href="https://benevity.com" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Visit Benevity
+                        </a>
+                    </div>
+
+                    <div class="tax-info">
+                        <i class="fas fa-info-circle"></i>
+                        <p>We are an <strong>IRS approved 501(c)(3) charitable organization</strong>. All contributions are tax deductible to the fullest extent allowed by law.</p>
+                    </div>
+
+                    <div class="corporate-steps">
+                        <h4>How to contribute through corporate matching:</h4>
+                        <ol>
+                            <li>Check if your employer offers charitable matching</li>
+                            <li>Search for "Weedagama Foundation" in your company's giving platform</li>
+                            <li>If using Benevity, we're already in their system</li>
+                            <li>Follow your company's donation process</li>
+                            <li>Your employer will match your contribution, doubling your impact!</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Individual Donations Section (Disabled) -->
+            <div class="donate-card disabled">
+                <div class="card-header">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>Individual Donations</h3>
+                    <span class="badge badge-coming-soon">Coming Soon</span>
+                </div>
+                <div class="card-content">
+                    <div class="coming-soon-overlay">
+                        <i class="fas fa-clock"></i>
+                        <h4>Individual Donations Coming Soon</h4>
+                        <p>We're currently in our pilot phase and preparing to accept individual contributions. Please check back later or join our mailing list for updates.</p>
+                    </div>
+                    
+                    <!-- Disabled donation form placeholder -->
+                    <div class="donation-form-placeholder">
+                        <div class="amount-selector">
+                            <h4>Select Donation Amount</h4>
+                            <div class="amount-buttons">
+                                <button class="amount-btn" disabled>$25</button>
+                                <button class="amount-btn" disabled>$50</button>
+                                <button class="amount-btn" disabled>$100</button>
+                                <button class="amount-btn" disabled>$250</button>
+                                <button class="amount-btn" disabled>Other</button>
+                            </div>
+                        </div>
+                        
+                        <div class="donation-frequency">
+                            <label>
+                                <input type="radio" name="frequency" value="one-time" disabled>
+                                One-time donation
+                            </label>
+                            <label>
+                                <input type="radio" name="frequency" value="monthly" disabled>
+                                Monthly recurring
+                            </label>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-large" disabled>
+                            <i class="fas fa-lock"></i> Donate Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="donate-info-section">
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure & Transparent</h3>
+                    <p>When we begin accepting individual donations, all transactions will be secure and encrypted. We maintain full transparency in how funds are utilized.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-receipt"></i>
+                    <h3>Tax Deductible</h3>
+                    <p>As an IRS approved 501(c)(3) organization, all donations to the Weedagama Foundation are tax deductible. You'll receive a receipt for your records.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>100% Impact</h3>
+                    <p>During our pilot phase, operational costs are covered by our founder, ensuring that future donations will have maximum impact on our projects.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stay Updated Section -->
+        <div class="stay-updated">
+            <h3>Stay Updated</h3>
+            <p>Be the first to know when we begin accepting individual donations</p>
+            <form class="update-form" action="/subscribe" method="POST">
+                <div class="form-group inline">
+                    <input type="email" name="email" placeholder="Enter your email address" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="donate-contact-cta">
+    <div class="container">
+        <h2>Questions About Donating?</h2>
+        <p>We're here to help with any questions about corporate matching or our future individual donation program.</p>
+        <a href="/contact" class="btn btn-secondary">Contact Us</a>
+    </div>
+</section>

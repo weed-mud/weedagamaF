@@ -125,6 +125,14 @@ db.serialize(() => {
     published BOOLEAN DEFAULT 1
   )`);
 
+  db.run(`ALTER TABLE projects ADD COLUMN display_order INTEGER DEFAULT 0`, (err) => {
+    // Ignore error if column already exists
+  });
+
+  db.run(`ALTER TABLE projects ADD COLUMN custom_stats TEXT`, (err) => {
+    // Ignore error if column already exists
+  });
+
   // Users table for admin
   db.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -308,7 +316,7 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/projects', (req, res) => {
-  db.all("SELECT * FROM projects WHERE published = 1 ORDER BY created_at DESC", (err, projects) => {
+  db.all("SELECT * FROM projects WHERE published = 1 ORDER BY display_order ASC, created_at DESC", (err, projects) => {
     res.render('projects', { 
       projects: projects || [],
       title: 'Our Projects'
@@ -345,6 +353,27 @@ app.get('/blog/:id', (req, res) => {
 
 app.get('/contact', (req, res) => {
   res.render('contact', { title: 'Contact Us' });
+});
+
+// Donate page route
+app.get('/donate', (req, res) => {
+  res.render('donate', { title: 'Donate' });
+});
+
+// Simple email subscription handler
+app.post('/subscribe', (req, res) => {
+    const { email } = req.body;
+    
+    // For now, just log it. Later you can save to database
+    console.log('Newsletter subscription:', email);
+    
+    // You could save to a new subscribers table:
+    // db.run("INSERT INTO subscribers (email, subscribed_at) VALUES (?, datetime('now'))", [email]);
+    
+    res.render('donate', { 
+        title: 'Donate',
+        subscribeSuccess: 'Thank you! We\'ll notify you when individual donations become available.'
+    });
 });
 
 // Application submission - Now logs client IP
@@ -660,7 +689,7 @@ app.post('/admin/blog/:id/delete', requireAuth, (req, res) => {
 
 // Admin project routes
 app.get('/admin/projects', requireAuth, (req, res) => {
-  db.all("SELECT * FROM projects ORDER BY created_at DESC", (err, projects) => {
+  db.all("SELECT * FROM projects ORDER BY display_order ASC, created_at DESC", (err, projects) => {
     res.render('admin/projects', { 
       projects: projects || [],
       title: 'Projects Management'
@@ -676,11 +705,37 @@ app.get('/admin/projects/new', requireAuth, (req, res) => {
 });
 
 app.post('/admin/projects', requireAuth, (req, res) => {
-  const { title, description, image_url, schools_count, students_count, investment } = req.body;
+  const { 
+    title, 
+    description, 
+    image_url, 
+    schools_count, 
+    students_count, 
+    investment,
+    display_order,
+    stat_label,
+    stat_value
+  } = req.body;
   
-  db.run(`INSERT INTO projects (title, description, image_url, schools_count, students_count, investment) 
-          VALUES (?, ?, ?, ?, ?, ?)`,
-    [title, description, image_url, schools_count || 0, students_count || 0, investment || ''], 
+  // Process custom stats
+  const customStats = [];
+  if (stat_label && stat_value) {
+    const labels = Array.isArray(stat_label) ? stat_label : [stat_label];
+    const values = Array.isArray(stat_value) ? stat_value : [stat_value];
+    
+    for (let i = 0; i < labels.length; i++) {
+      if (labels[i] && values[i]) {
+        customStats.push({
+          label: labels[i],
+          value: values[i]
+        });
+      }
+    }
+  }
+  
+  db.run(`INSERT INTO projects (title, description, image_url, schools_count, students_count, investment, display_order, custom_stats, published) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+    [title, description, image_url, schools_count || 0, students_count || 0, investment || '', display_order || 0, JSON.stringify(customStats)], 
     (err) => {
       if (err) {
         console.error(err);
@@ -710,14 +765,41 @@ app.get('/admin/projects/edit/:id', requireAuth, (req, res) => {
 
 app.post('/admin/projects/:id', requireAuth, (req, res) => {
   const { id } = req.params;
-  const { title, description, image_url, schools_count, students_count, investment, published } = req.body;
+  const { 
+    title, 
+    description, 
+    image_url, 
+    schools_count, 
+    students_count, 
+    investment, 
+    display_order,
+    published,
+    stat_label,
+    stat_value
+  } = req.body;
+  
+  // Process custom stats
+  const customStats = [];
+  if (stat_label && stat_value) {
+    const labels = Array.isArray(stat_label) ? stat_label : [stat_label];
+    const values = Array.isArray(stat_value) ? stat_value : [stat_value];
+    
+    for (let i = 0; i < labels.length; i++) {
+      if (labels[i] && values[i]) {
+        customStats.push({
+          label: labels[i],
+          value: values[i]
+        });
+      }
+    }
+  }
   
   db.run(`UPDATE projects 
           SET title = ?, description = ?, image_url = ?, schools_count = ?, students_count = ?, 
-              investment = ?, published = ? 
+              investment = ?, display_order = ?, custom_stats = ?, published = ? 
           WHERE id = ?`,
     [title, description, image_url, schools_count || 0, students_count || 0, 
-     investment || '', published ? 1 : 0, id], 
+     investment || '', display_order || 0, JSON.stringify(customStats), published ? 1 : 0, id], 
     (err) => {
       if (err) {
         console.error(err);
@@ -741,6 +823,41 @@ app.post('/admin/projects/:id/delete', requireAuth, (req, res) => {
     res.redirect('/admin/projects');
   });
 });
+
+// Add new route for reordering projects
+app.post('/admin/projects/reorder', requireAuth, express.json(), (req, res) => {
+  const { orders } = req.body;
+  
+  if (!orders || !Array.isArray(orders)) {
+    return res.status(400).json({ success: false, error: 'Invalid orders data' });
+  }
+  
+  let completed = 0;
+  let hasError = false;
+  
+  orders.forEach(item => {
+    db.run('UPDATE projects SET display_order = ? WHERE id = ?',
+      [item.order, item.id], 
+      (err) => {
+        if (err) {
+          console.error('Error updating project order:', err);
+          hasError = true;
+        }
+        completed++;
+        
+        if (completed === orders.length) {
+          if (hasError) {
+            res.status(500).json({ success: false, error: 'Failed to update some orders' });
+          } else {
+            res.json({ success: true });
+          }
+        }
+      }
+    );
+  });
+});
+
+
 
 // Admin stats management
 app.get('/admin/stats', requireAuth, (req, res) => {

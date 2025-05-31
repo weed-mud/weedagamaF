@@ -7,73 +7,6 @@
     <title>Projects Management - Weedagama Foundation Admin</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-    <style>
-        .projects-table {
-            width: 100%;
-            background: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .projects-table th,
-        .projects-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .projects-table th {
-            background: var(--bg-light);
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        
-        .projects-table tr:hover {
-            background: var(--bg-light);
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn-small {
-            padding: 5px 15px;
-            font-size: 0.9rem;
-        }
-        
-        .btn-delete {
-            background: var(--error);
-            color: var(--white);
-            border: none;
-            padding: 5px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .btn-delete:hover {
-            background: #c0392b;
-        }
-        
-        .status-badge {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .published {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .draft {
-            background: #f8d7da;
-            color: #721c24;
-        }
-    </style>
 </head>
 <body>
     <div class="admin-layout">
@@ -95,7 +28,7 @@
             <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <h1>Projects</h1>
-                    <p>Manage your projects and initiatives</p>
+                    <p>Manage your projects and initiatives - Drag to reorder</p>
                 </div>
                 <div>
                     <a href="/admin/projects/new" class="btn btn-primary">
@@ -108,21 +41,50 @@
                 <table class="projects-table">
                     <thead>
                         <tr>
+                            <th></th>
+                            <th>Order</th>
                             <th>Title</th>
-                            <th>Schools</th>
-                            <th>Students</th>
-                            <th>Investment</th>
+                            <th>Default Stats</th>
+                            <th>Custom Stats</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="projects-tbody">
                         <% projects.forEach(project => { %>
-                        <tr>
+                        <tr draggable="true" data-project-id="<%= project.id %>">
+                            <td><span class="drag-handle">⋮⋮</span></td>
+                            <td><span class="order-badge"><%= project.display_order || 0 %></span></td>
                             <td><%= project.title %></td>
-                            <td><%= project.schools_count || '-' %></td>
-                            <td><%= project.students_count || '-' %></td>
-                            <td><%= project.investment || '-' %></td>
+                            <td>
+                                <% if (project.schools_count) { %>Schools: <%= project.schools_count %><br><% } %>
+                                <% if (project.students_count) { %>Students: <%= project.students_count %><br><% } %>
+                                <% if (project.investment) { %>Investment: <%= project.investment %><% } %>
+                                <% if (!project.schools_count && !project.students_count && !project.investment) { %>-<% } %>
+                            </td>
+                            <td>
+                                <div class="custom-stats">
+                                    <% 
+                                    let customStats = [];
+                                    if (project.custom_stats) {
+                                        try {
+                                            customStats = typeof project.custom_stats === 'string' 
+                                                ? JSON.parse(project.custom_stats) 
+                                                : project.custom_stats;
+                                        } catch(e) {
+                                            customStats = [];
+                                        }
+                                    }
+                                    %>
+                                    <% if (customStats.length > 0) { %>
+                                        <% customStats.forEach(stat => { %>
+                                            <span class="custom-stat"><%= stat.label %>: <%= stat.value %></span>
+                                        <% }) %>
+                                    <% } else { %>
+                                        -
+                                    <% } %>
+                                </div>
+                            </td>
                             <td>
                                 <span class="status-badge <%= project.published ? 'published' : 'draft' %>">
                                     <%= project.published ? 'Active' : 'Draft' %>
@@ -159,5 +121,105 @@
             <% } %>
         </main>
     </div>
+    
+    <script>
+        // Drag and drop functionality
+        let draggedElement = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.getElementById('projects-tbody');
+            if (!tbody) return;
+            
+            const rows = tbody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                row.addEventListener('dragstart', handleDragStart);
+                row.addEventListener('dragover', handleDragOver);
+                row.addEventListener('drop', handleDrop);
+                row.addEventListener('dragend', handleDragEnd);
+            });
+        });
+        
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            
+            const afterElement = getDragAfterElement(e.currentTarget.parentElement, e.clientY);
+            if (afterElement == null) {
+                e.currentTarget.parentElement.appendChild(draggedElement);
+            } else {
+                e.currentTarget.parentElement.insertBefore(draggedElement, afterElement);
+            }
+            
+            return false;
+        }
+        
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            
+            updateOrder();
+            
+            return false;
+        }
+        
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+        
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('tr:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        function updateOrder() {
+            const tbody = document.getElementById('projects-tbody');
+            const rows = tbody.querySelectorAll('tr');
+            const orders = [];
+            
+            rows.forEach((row, index) => {
+                const projectId = row.getAttribute('data-project-id');
+                orders.push({ id: projectId, order: index });
+                
+                // Update the visual order badge
+                const orderBadge = row.querySelector('.order-badge');
+                if (orderBadge) {
+                    orderBadge.textContent = index;
+                }
+            });
+            
+            // Send update to server
+            fetch('/admin/projects/reorder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ orders: orders })
+            }).then(response => {
+                if (!response.ok) {
+                    alert('Failed to update order. Please refresh and try again.');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

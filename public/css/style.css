@@ -1686,3 +1686,563 @@ main {
         grid-template-columns: 1fr;
     }
 }
+
+/* Drag and drop styles for admin */
+.drag-handle {
+    cursor: move;
+    color: #999;
+    font-size: 1.2rem;
+    padding: 0 10px;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+.order-badge {
+    background: #e0e0e0;
+    color: #666;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Custom stats in admin table */
+.custom-stats {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.custom-stat {
+    display: inline-block;
+    margin-right: 15px;
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Custom stats form styles */
+.custom-stats-container {
+    background: var(--bg-light);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.custom-stat-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.custom-stat-row input {
+    width: 100%;
+}
+
+.btn-remove-stat {
+    background: var(--error);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-add-stat {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.form-group.inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.inline input[type="number"] {
+    width: 100px;
+}
+
+/* Responsive updates for project stats */
+@media (max-width: 768px) {
+    .project-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .custom-stat-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .btn-remove-stat {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.project-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    text-align: center; /* Add this to center align the stats */
+}
+
+.project-stats .stat {
+    text-align: center;
+    padding: 15px;
+    background: var(--bg-light);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+}
+
+.project-stats .number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.project-stats .label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-align: center;
+}
+
+/* For better responsive behavior with dynamic number of stats */
+.project-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.project-stats .stat {
+    flex: 0 1 calc(33.333% - 20px); /* Three columns by default */
+    min-width: 120px; /* Minimum width for each stat */
+    text-align: center;
+    padding: 15px;
+    background: var(--bg-light);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-stats .stat {
+        flex: 0 1 calc(50% - 20px); /* Two columns on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .project-stats .stat {
+        flex: 0 1 100%; /* Single column on mobile */
+    }
+}
+
+.project-content {
+    padding: 30px;
+    text-align: center; /* Center all content including title and description */
+}
+
+.project-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.project-content p {
+    color: var(--text-light);
+    margin-bottom: 25px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* Or if you only want the stats centered but not the text */
+.project-content {
+    padding: 30px;
+}
+
+.project-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    text-align: left; /* Keep title left-aligned */
+}
+
+.project-content p {
+    color: var(--text-light);
+    margin-bottom: 25px;
+    line-height: 1.7;
+    text-align: left; /* Keep description left-aligned */
+}
+
+/* Donate Page Styles */
+.donate-section {
+    padding: 60px 0;
+}
+
+.donate-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 60px;
+}
+
+.donate-intro h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.donate-intro p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+.donate-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.donate-card {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.donate-card.active {
+    border: 2px solid var(--primary-color);
+}
+
+.donate-card.disabled {
+    opacity: 0.7;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 30px;
+    background: var(--bg-light);
+    text-align: center;
+    position: relative;
+}
+
+.card-header i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.card-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-active {
+    background: var(--success);
+    color: var(--white);
+}
+
+.badge-coming-soon {
+    background: var(--secondary-color);
+    color: var(--text-dark);
+}
+
+.card-content {
+    padding: 30px;
+    position: relative;
+}
+
+.benevity-info {
+    background: #e8f4fd;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.benevity-info h4 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.benevity-info h4 i {
+    color: var(--success);
+    margin-right: 8px;
+}
+
+.tax-info {
+    background: #fff9e6;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    display: flex;
+    align-items: start;
+    gap: 15px;
+}
+
+.tax-info i {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.corporate-steps {
+    margin-top: 30px;
+}
+
+.corporate-steps h4 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.corporate-steps ol {
+    padding-left: 20px;
+}
+
+.corporate-steps li {
+    margin-bottom: 10px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Disabled donation form styles */
+.coming-soon-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    z-index: 10;
+}
+
+.coming-soon-overlay i {
+    font-size: 3rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.coming-soon-overlay h4 {
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.donation-form-placeholder {
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.amount-selector {
+    margin-bottom: 30px;
+}
+
+.amount-selector h4 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.amount-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.amount-btn {
+    padding: 15px 30px;
+    border: 2px solid var(--border-color);
+    background: var(--white);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.donation-frequency {
+    margin: 30px 0;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.donation-frequency label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+}
+
+.btn-large {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Info section */
+.donate-info-section {
+    margin: 60px 0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.info-card {
+    text-align: center;
+    padding: 30px;
+}
+
+.info-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.info-card h3 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.info-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Stay Updated Section */
+.stay-updated {
+    background: var(--bg-light);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 600px;
+    margin: 60px auto 0;
+}
+
+.stay-updated h3 {
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.stay-updated p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.update-form .form-group.inline {
+    display: flex;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.update-form input {
+    flex: 1;
+}
+
+/* Contact CTA */
+.donate-contact-cta {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 60px 0;
+    text-align: center;
+}
+
+.donate-contact-cta h2 {
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.donate-contact-cta p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .donate-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .amount-buttons {
+        flex-direction: column;
+    }
+    
+    .amount-btn {
+        width: 100%;
+    }
+    
+    .donation-frequency {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .update-form .form-group.inline {
+        flex-direction: column;
+    }
+    
+    .update-form input,
+    .update-form button {
+        width: 100%;
+    }
+}
+
+.nav-link.donate-nav {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.nav-link.donate-nav i {
+    margin-right: 5px;
+    color: var(--error);
+}

@@ -17,9 +17,8 @@
             <ul class="admin-menu">
                 <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
-                <li><a href="/admin/projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
-                <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
                 <li><a href="/admin/projects" class="active"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
                 <li><a href="/admin/stats"><i class="fas fa-chart-bar"></i> Stats</a></li>
                 <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
@@ -83,6 +82,59 @@
                         <small>Any relevant metric showing the project's scale or impact</small>
                     </div>
                     
+                    <!-- Display Order Field -->
+                    <div class="form-group inline">
+                        <label for="display_order">Display Order</label>
+                        <input type="number" id="display_order" name="display_order" 
+                               value="<%= project ? project.display_order : 0 %>" min="0">
+                        <small>Lower numbers appear first (0 = highest priority)</small>
+                    </div>
+                    
+                    <!-- Custom Stats Section -->
+                    <div class="custom-stats-container">
+                        <h3>Custom Statistics</h3>
+                        <p>Add custom metrics specific to this project</p>
+                        
+                        <div id="custom-stats">
+                            <% 
+                            let customStats = [];
+                            if (project && project.custom_stats) {
+                                try {
+                                    customStats = typeof project.custom_stats === 'string' 
+                                        ? JSON.parse(project.custom_stats) 
+                                        : project.custom_stats;
+                                } catch(e) {
+                                    customStats = [];
+                                }
+                            }
+                            %>
+                            
+                            <% if (customStats.length === 0) { %>
+                                <div class="custom-stat-row">
+                                    <input type="text" name="stat_label[]" placeholder="Label (e.g., Trees Planted)">
+                                    <input type="text" name="stat_value[]" placeholder="Value (e.g., 1,500)">
+                                    <button type="button" class="btn-remove-stat" onclick="removeStatRow(this)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            <% } else { %>
+                                <% customStats.forEach(stat => { %>
+                                    <div class="custom-stat-row">
+                                        <input type="text" name="stat_label[]" value="<%= stat.label %>" placeholder="Label">
+                                        <input type="text" name="stat_value[]" value="<%= stat.value %>" placeholder="Value">
+                                        <button type="button" class="btn-remove-stat" onclick="removeStatRow(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                <% }) %>
+                            <% } %>
+                        </div>
+                        
+                        <button type="button" class="btn-add-stat" onclick="addStatRow()">
+                            <i class="fas fa-plus"></i> Add Another Stat
+                        </button>
+                    </div>
+                    
                     <% if (project) { %>
                     <div class="form-group">
                         <label>
@@ -102,5 +154,31 @@
             </div>
         </main>
     </div>
+    
+    <script>
+        function addStatRow() {
+            const container = document.getElementById('custom-stats');
+            const newRow = document.createElement('div');
+            newRow.className = 'custom-stat-row';
+            newRow.innerHTML = `
+                <input type="text" name="stat_label[]" placeholder="Label (e.g., Trees Planted)">
+                <input type="text" name="stat_value[]" placeholder="Value (e.g., 1,500)">
+                <button type="button" class="btn-remove-stat" onclick="removeStatRow(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newRow);
+        }
+        
+        function removeStatRow(button) {
+            const row = button.parentElement;
+            if (document.querySelectorAll('.custom-stat-row').length > 1) {
+                row.remove();
+            } else {
+                // Clear the inputs instead of removing the last row
+                row.querySelectorAll('input').forEach(input => input.value = '');
+            }
+        }
+    </script>
 </body>
 </html>
