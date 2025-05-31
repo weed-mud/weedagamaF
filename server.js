@@ -397,7 +397,7 @@ app.get('/apply', (req, res) => {
 
 // Public routes for schools
 app.get('/schools', (req, res) => {
-  db.all("SELECT * FROM schools WHERE enrollment_status = 'active' ORDER BY name ASC", (err, schools) => {
+  db.all("SELECT * FROM schools WHERE enrollment_status IN ('active', 'pending') ORDER BY enrollment_status, name ASC", (err, schools) => {
     res.render('schools', { 
       schools: schools || [],
       title: 'Partner Schools'
@@ -407,7 +407,7 @@ app.get('/schools', (req, res) => {
 
 app.get('/schools/:id', (req, res) => {
   const { id } = req.params;
-  db.get("SELECT * FROM schools WHERE id = ? AND enrollment_status = 'active'", [id], (err, school) => {
+  db.get("SELECT * FROM schools WHERE id = ? AND enrollment_status IN ('active', 'pending')", [id], (err, school) => {
     if (err || !school) {
       return res.redirect('/schools');
     }
@@ -417,6 +417,7 @@ app.get('/schools/:id', (req, res) => {
     });
   });
 });
+
 
 // Volunteer page
 app.get('/volunteer', (req, res) => {

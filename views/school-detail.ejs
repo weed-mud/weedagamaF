@@ -14,7 +14,12 @@
                     <h2>About This School</h2>
                     <p><%= school.description || 'No description available.' %></p>
                     
-                    <% if (school.enrolled_date) { %>
+                    <% if (school.enrollment_status === 'pending') { %>
+                    <div class="enrollment-info onboarding">
+                        <i class="fas fa-hourglass-half"></i>
+                        <span>Currently being onboarded</span>
+                    </div>
+                    <% } else if (school.enrolled_date) { %>
                     <div class="enrollment-info">
                         <i class="fas fa-calendar-check"></i>
                         <span>Partner since <%= new Date(school.enrolled_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) %></span>

@@ -1,3 +1,6 @@
+/* ===================================
+   CSS Variables & Reset
+   =================================== */
 :root {
     --primary-color: #2c5aa0;
     --secondary-color: #f8b500;
@@ -30,7 +33,18 @@ body {
     padding: 0 20px;
 }
 
-/* for a text-based logo */
+main {
+    margin-top: 70px;
+}
+
+/* ===================================
+   Logo Styles
+   =================================== */
+.logo {
+    height: 40px;
+    margin-right: 10px;
+}
+
 .logo-text {
     background: var(--primary-color);
     color: var(--white);
@@ -42,7 +56,6 @@ body {
     display: inline-block;
 }
 
-/* Alternative circular logo */
 .logo-circle {
     width: 40px;
     height: 40px;
@@ -57,7 +70,9 @@ body {
     margin-right: 10px;
 }
 
-/* Navigation */
+/* ===================================
+   Navigation
+   =================================== */
 .navbar {
     background: var(--white);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -82,11 +97,6 @@ body {
     align-items: center;
     text-decoration: none;
     color: var(--text-dark);
-}
-
-.logo {
-    height: 40px;
-    margin-right: 10px;
 }
 
 .brand-text {
@@ -126,6 +136,16 @@ body {
     color: var(--white);
 }
 
+.nav-link.donate-nav {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.nav-link.donate-nav i {
+    margin-right: 5px;
+    color: var(--error);
+}
+
 .hamburger {
     display: none;
     flex-direction: column;
@@ -140,7 +160,9 @@ body {
     transition: 0.3s;
 }
 
-/* Hero Section */
+/* ===================================
+   Hero Section
+   =================================== */
 .hero {
     margin-top: 0;
     padding: 80px 0;
@@ -190,7 +212,9 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* Buttons */
+/* ===================================
+   Buttons
+   =================================== */
 .btn {
     display: inline-block;
     padding: 12px 30px;
@@ -236,7 +260,78 @@ body {
     color: var(--white);
 }
 
-/* Stats Section */
+.btn-success {
+    background: var(--success);
+    color: var(--white);
+    border-color: var(--success);
+}
+
+.btn-success:hover {
+    background: #229954;
+    border-color: #229954;
+}
+
+.btn-error {
+    background: var(--error);
+    color: var(--white);
+    border-color: var(--error);
+}
+
+.btn-error:hover {
+    background: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-small {
+    padding: 5px 15px;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    background: var(--error);
+    color: var(--white);
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+}
+
+.btn-large {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+.btn-remove-stat {
+    background: var(--error);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-add-stat {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* ===================================
+   Stats Section
+   =================================== */
 .stats-section {
     padding: 80px 0;
     background: var(--primary-color);
@@ -254,33 +349,73 @@ body {
     padding: 30px 20px;
     background: var(--white);
     border-radius: 10px;
-    text-align: center; /* Center align content */
+    text-align: center;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    min-height: 150px; /* Give cards consistent height */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
 }
 
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
-    color: var(--secondary-color); /* Keep the orange/yellow color */
+    color: var(--secondary-color);
     margin-bottom: 10px;
     line-height: 1;
-    display: block; /* Ensure it's a block element */
+    display: block;
 }
 
 .stat-label {
     font-size: 1.1rem;
     font-weight: 500;
-    color: var(--text-dark); /* Dark text for contrast */
-    margin-top: 5px; /* Small space between number and label */
-    display: block; /* Ensure it's a block element */
-    text-align: center; /* Center the text */
+    color: var(--text-dark);
+    margin-top: 5px;
+    display: block;
+    text-align: center;
 }
 
-/* Mission Section */
+/* Admin stat card variant */
+.admin-stats .stat-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    min-height: auto;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+.stat-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+.stat-content p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ===================================
+   Mission Section
+   =================================== */
 .mission-section {
     padding: 100px 0;
     background: var(--white);
@@ -305,7 +440,6 @@ body {
     margin: 0 auto;
 }
 
-/* Simple Flip Mission Cards */
 .mission-grid {
     display: flex;
     flex-wrap: wrap;
@@ -475,7 +609,9 @@ body {
     top: 0;
 }
 
-/* News Section */
+/* ===================================
+   News Section
+   =================================== */
 .news-section {
     padding: 100px 0;
     background: var(--bg-light);
@@ -551,7 +687,9 @@ body {
     text-align: center;
 }
 
-/* CTA Section */
+/* ===================================
+   CTA Section
+   =================================== */
 .cta-section {
     padding: 100px 0;
     background: var(--primary-color);
@@ -573,11 +711,9 @@ body {
     margin-right: auto;
 }
 
-main {
-    margin-top: 70px;
-}
-
-/* Page Header */
+/* ===================================
+   Page Header
+   =================================== */
 .page-header {
     margin-top: 0;
     padding: 80px 0;
@@ -597,7 +733,9 @@ main {
     color: var(--text-light);
 }
 
-/* Forms */
+/* ===================================
+   Forms
+   =================================== */
 .form-container {
     max-width: 800px;
     margin: 0 auto;
@@ -667,6 +805,16 @@ main {
     font-size: 0.9rem;
 }
 
+.form-group.inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group.inline input[type="number"] {
+    width: 100px;
+}
+
 .form-actions {
     text-align: center;
     margin-top: 40px;
@@ -678,7 +826,47 @@ main {
     font-size: 0.9rem;
 }
 
-/* Alerts */
+.admin-form-container {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.contact-form-container {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.contact-form .form-group {
+    margin-bottom: 25px;
+}
+
+/* Custom stats form styles */
+.custom-stats-container {
+    background: var(--bg-light);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.custom-stat-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.custom-stat-row input {
+    width: 100%;
+}
+
+/* ===================================
+   Alerts
+   =================================== */
 .alert {
     padding: 15px 20px;
     border-radius: 8px;
@@ -702,7 +890,9 @@ main {
     padding-left: 20px;
 }
 
-/* Success Page */
+/* ===================================
+   Success Page
+   =================================== */
 .success-page {
     margin-top: 70px;
     padding: 100px 0;
@@ -773,7 +963,9 @@ main {
     justify-content: center;
 }
 
-/* Footer */
+/* ===================================
+   Footer
+   =================================== */
 .footer {
     background: var(--text-dark);
     color: var(--white);
@@ -849,184 +1041,9 @@ main {
     color: #bdc3c7;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
-    
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background-color: var(--white);
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
-        padding: 20px 0;
-    }
-    
-    .nav-menu.active {
-        left: 0;
-    }
-    
-    .hero-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-    }
-    
-    .hero-content h1 {
-        font-size: 2.2rem;
-    }
-    
-    .hero-buttons {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-    }
-    
-    .mission-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .mission-card {
-        width: 100%;
-        max-width: 300px;
-        height: 320px;
-    }
-    
-    .mission-card-front,
-    .mission-card-back {
-        padding: 25px;
-    }
-    
-    .mission-icon {
-        width: 70px;
-        height: 70px;
-        font-size: 1.8rem;
-    }
-    
-    .mission-card h3 {
-        font-size: 1.2rem;
-    }
-    
-    .news-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .success-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .page-header h1 {
-        font-size: 2.2rem;
-    }
-    
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    
-    .cta-content h2 {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0 15px;
-    }
-    
-    .hero {
-        padding: 40px 0;
-    }
-    
-    .hero-content h1 {
-        font-size: 1.8rem;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .stat-number {
-        font-size: 2.5rem;
-    }
-    
-    .form-container {
-        padding: 30px 20px;
-    }
-    
-    .mission-section,
-    .news-section,
-    .cta-section {
-        padding: 60px 0;
-    }
-    
-    .mission-card {
-        height: 300px;
-    }
-    
-    .mission-card-front,
-    .mission-card-back {
-        padding: 20px;
-    }
-    
-    .mission-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-    }
-    
-    .mission-card-back ul li {
-        font-size: 0.8rem;
-        margin-bottom: 6px;
-    }
-}
-
-/* Touch devices */
-@media (hover: none) and (pointer: coarse) {
-    .mission-card:hover .mission-card-front {
-        opacity: 1;
-        transform: rotateY(0deg);
-        z-index: 2;
-    }
-    
-    .mission-card:hover .mission-card-back {
-        opacity: 0;
-        transform: rotateY(180deg);
-        z-index: 1;
-    }
-    
-    .mission-card.flipped .mission-card-front {
-        opacity: 0;
-        transform: rotateY(-180deg);
-        z-index: 1;
-    }
-    
-    .mission-card.flipped .mission-card-back {
-        opacity: 1;
-        transform: rotateY(0deg);
-        z-index: 2;
-    }
-}
-
-/* Add this CSS to your public/css/style.css file for admin layout */
-
-/* Admin Layout Styles */
+/* ===================================
+   Admin Layout
+   =================================== */
 .admin-layout {
     display: flex;
     min-height: 100vh;
@@ -1121,41 +1138,6 @@ main {
     margin-bottom: 40px;
 }
 
-.stat-card {
-    background: var(--white);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.stat-icon {
-    width: 50px;
-    height: 50px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    font-size: 1.2rem;
-}
-
-.stat-content h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 5px;
-}
-
-.stat-content p {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    margin: 0;
-}
-
 /* Quick Actions */
 .admin-actions h2 {
     color: var(--text-dark);
@@ -1202,57 +1184,14 @@ main {
     margin: 0;
 }
 
-/* Admin responsive */
-@media (max-width: 768px) {
-    .admin-nav {
-        width: 100%;
-        height: auto;
-        position: static;
-    }
-    
-    .admin-main {
-        margin-left: 0;
-    }
-    
-    .admin-layout {
-        flex-direction: column;
-    }
+.action-buttons {
+    display: flex;
+    gap: 10px;
 }
 
-/* Admin form styles */
-.admin-form-container {
-    background: var(--white);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* Button variants for admin */
-.btn-success {
-    background: var(--success);
-    color: var(--white);
-    border-color: var(--success);
-}
-
-.btn-success:hover {
-    background: #229954;
-    border-color: #229954;
-}
-
-.btn-error {
-    background: var(--error);
-    color: var(--white);
-    border-color: var(--error);
-}
-
-.btn-error:hover {
-    background: #c0392b;
-    border-color: #c0392b;
-}
-
-/* Add this CSS to the end of your public/css/style.css file */
-
-/* Blog Section Styles */
+/* ===================================
+   Blog Section
+   =================================== */
 .blog-section {
     padding: 60px 0;
 }
@@ -1368,7 +1307,9 @@ main {
     text-align: center;
 }
 
-/* Contact Section Styles */
+/* ===================================
+   Contact Section
+   =================================== */
 .contact-section {
     padding: 60px 0;
 }
@@ -1436,18 +1377,9 @@ main {
     margin-bottom: 10px;
 }
 
-.contact-form-container {
-    background: var(--white);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.contact-form .form-group {
-    margin-bottom: 25px;
-}
-
-/* Projects Section Styles */
+/* ===================================
+   Projects Section
+   =================================== */
 .projects-section {
     padding: 60px 0;
 }
@@ -1491,25 +1423,34 @@ main {
     font-weight: 600;
     color: var(--text-dark);
     margin-bottom: 15px;
+    text-align: left;
 }
 
 .project-content p {
     color: var(--text-light);
     margin-bottom: 25px;
     line-height: 1.7;
+    text-align: left;
 }
 
 .project-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
 }
 
 .project-stats .stat {
+    flex: 0 1 calc(33.333% - 20px);
+    min-width: 120px;
     text-align: center;
     padding: 15px;
     background: var(--bg-light);
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .project-stats .number {
@@ -1518,14 +1459,44 @@ main {
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 5px;
+    line-height: 1;
 }
 
 .project-stats .label {
     font-size: 0.9rem;
     color: var(--text-light);
+    text-align: center;
 }
 
-/* Impact Section */
+/* Admin project table styles */
+.projects-table {
+    width: 100%;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.projects-table th,
+.projects-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.projects-table th {
+    background: var(--bg-light);
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.projects-table tr:hover {
+    background: var(--bg-light);
+}
+
+/* ===================================
+   Impact Section
+   =================================== */
 .impact-section {
     padding: 60px 0;
     background: var(--bg-light);
@@ -1567,7 +1538,9 @@ main {
     line-height: 1.7;
 }
 
-/* About Page Styles */
+/* ===================================
+   About Page
+   =================================== */
 .about-content {
     padding: 60px 0;
 }
@@ -1609,7 +1582,9 @@ main {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* Values Section */
+/* ===================================
+   Values Section
+   =================================== */
 .values-section {
     padding: 60px 0;
     background: var(--bg-light);
@@ -1655,253 +1630,9 @@ main {
     line-height: 1.7;
 }
 
-/* Responsive Design for Additional Sections */
-@media (max-width: 768px) {
-    .contact-grid,
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .project-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .post-header,
-    .post-content,
-    .post-actions {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    
-    .contact-form-container {
-        padding: 30px 20px;
-    }
-    
-    .blog-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Drag and drop styles for admin */
-.drag-handle {
-    cursor: move;
-    color: #999;
-    font-size: 1.2rem;
-    padding: 0 10px;
-}
-
-.dragging {
-    opacity: 0.5;
-}
-
-.order-badge {
-    background: #e0e0e0;
-    color: #666;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-/* Custom stats in admin table */
-.custom-stats {
-    font-size: 0.85rem;
-    color: #666;
-}
-
-.custom-stat {
-    display: inline-block;
-    margin-right: 15px;
-    background: #f0f0f0;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-
-/* Custom stats form styles */
-.custom-stats-container {
-    background: var(--bg-light);
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
-.custom-stat-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr auto;
-    gap: 15px;
-    margin-bottom: 15px;
-    align-items: center;
-}
-
-.custom-stat-row input {
-    width: 100%;
-}
-
-.btn-remove-stat {
-    background: var(--error);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn-add-stat {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.form-group.inline {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.form-group.inline input[type="number"] {
-    width: 100px;
-}
-
-/* Responsive updates for project stats */
-@media (max-width: 768px) {
-    .project-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .custom-stat-row {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .btn-remove-stat {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .project-stats {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-.project-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    text-align: center; /* Add this to center align the stats */
-}
-
-.project-stats .stat {
-    text-align: center;
-    padding: 15px;
-    background: var(--bg-light);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-}
-
-.project-stats .number {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 5px;
-    line-height: 1;
-}
-
-.project-stats .label {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    text-align: center;
-}
-
-/* For better responsive behavior with dynamic number of stats */
-.project-stats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.project-stats .stat {
-    flex: 0 1 calc(33.333% - 20px); /* Three columns by default */
-    min-width: 120px; /* Minimum width for each stat */
-    text-align: center;
-    padding: 15px;
-    background: var(--bg-light);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .project-stats .stat {
-        flex: 0 1 calc(50% - 20px); /* Two columns on tablets */
-    }
-}
-
-@media (max-width: 480px) {
-    .project-stats .stat {
-        flex: 0 1 100%; /* Single column on mobile */
-    }
-}
-
-.project-content {
-    padding: 30px;
-    text-align: center; /* Center all content including title and description */
-}
-
-.project-content h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.project-content p {
-    color: var(--text-light);
-    margin-bottom: 25px;
-    line-height: 1.7;
-    text-align: center;
-}
-
-/* Or if you only want the stats centered but not the text */
-.project-content {
-    padding: 30px;
-}
-
-.project-content h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    text-align: left; /* Keep title left-aligned */
-}
-
-.project-content p {
-    color: var(--text-light);
-    margin-bottom: 25px;
-    line-height: 1.7;
-    text-align: left; /* Keep description left-aligned */
-}
-
-/* Donate Page Styles */
+/* ===================================
+   Donate Page
+   =================================== */
 .donate-section {
     padding: 60px 0;
 }
@@ -2118,15 +1849,6 @@ main {
     color: var(--text-light);
 }
 
-.btn-large {
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-    display: block;
-}
-
 /* Info section */
 .donate-info-section {
     margin: 60px 0;
@@ -2208,46 +1930,9 @@ main {
     margin-bottom: 25px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .donate-options {
-        grid-template-columns: 1fr;
-    }
-    
-    .amount-buttons {
-        flex-direction: column;
-    }
-    
-    .amount-btn {
-        width: 100%;
-    }
-    
-    .donation-frequency {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .update-form .form-group.inline {
-        flex-direction: column;
-    }
-    
-    .update-form input,
-    .update-form button {
-        width: 100%;
-    }
-}
-
-.nav-link.donate-nav {
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.nav-link.donate-nav i {
-    margin-right: 5px;
-    color: var(--error);
-}
-
-/* Schools Page Styles */
+/* ===================================
+   Schools Page
+   =================================== */
 .schools-section {
     padding: 60px 0;
 }
@@ -2274,6 +1959,7 @@ main {
     padding: 25px 25px 20px;
     background: var(--bg-light);
     border-bottom: 1px solid var(--border-color);
+    position: relative;
 }
 
 .school-header h3 {
@@ -2290,6 +1976,21 @@ main {
 .school-location i {
     margin-right: 5px;
     color: var(--primary-color);
+}
+
+.school-header .status-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-onboarding {
+    background: #e3f2fd;
+    color: #1976d2;
 }
 
 .school-content {
@@ -2335,24 +2036,6 @@ main {
     gap: 40px;
 }
 
-.info-card {
-    background: var(--white);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-.info-card h2 {
-    color: var(--text-dark);
-    margin-bottom: 20px;
-}
-
-.info-card h3 {
-    color: var(--text-dark);
-    margin-bottom: 15px;
-}
-
 .enrollment-info {
     display: flex;
     align-items: center;
@@ -2365,6 +2048,14 @@ main {
 
 .enrollment-info i {
     color: var(--primary-color);
+}
+
+.enrollment-info.onboarding {
+    background: #e3f2fd;
+}
+
+.enrollment-info.onboarding i {
+    color: #1976d2;
 }
 
 .detail-stats {
@@ -2424,7 +2115,35 @@ main {
     margin-top: 40px;
 }
 
-/* Volunteer Page Styles */
+/* Admin Schools Table */
+.schools-table {
+    width: 100%;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.schools-table th,
+.schools-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.schools-table th {
+    background: var(--bg-light);
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.schools-table tr:hover {
+    background: var(--bg-light);
+}
+
+/* ===================================
+   Volunteer Page
+   =================================== */
 .volunteer-section {
     padding: 60px 0;
 }
@@ -2615,32 +2334,9 @@ main {
     margin-bottom: 30px;
 }
 
-/* Admin Schools Table */
-.schools-table {
-    width: 100%;
-    background: var(--white);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.schools-table th,
-.schools-table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.schools-table th {
-    background: var(--bg-light);
-    font-weight: 600;
-    color: var(--text-dark);
-}
-
-.schools-table tr:hover {
-    background: var(--bg-light);
-}
-
+/* ===================================
+   Status Badges
+   =================================== */
 .status-badge {
     padding: 5px 12px;
     border-radius: 20px;
@@ -2664,7 +2360,19 @@ main {
     color: #721c24;
 }
 
-/* Empty State */
+.published {
+    background: #d4edda;
+    color: #155724;
+}
+
+.draft {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ===================================
+   Empty State
+   =================================== */
 .empty-state {
     text-align: center;
     padding: 80px 20px;
@@ -2685,8 +2393,224 @@ main {
     color: var(--text-light);
 }
 
-/* Responsive */
+/* ===================================
+   Utility Classes
+   =================================== */
+.drag-handle {
+    cursor: move;
+    color: #999;
+    font-size: 1.2rem;
+    padding: 0 10px;
+}
+
+.dragging {
+    opacity: 0.5;
+}
+
+.order-badge {
+    background: #e0e0e0;
+    color: #666;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Custom stats in admin table */
+.custom-stats {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.custom-stat {
+    display: inline-block;
+    margin-right: 15px;
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
 @media (max-width: 768px) {
+    /* Navigation */
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: var(--white);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+        padding: 20px 0;
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    /* Hero */
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* Stats */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    /* Mission */
+    .mission-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .mission-card {
+        width: 100%;
+        max-width: 300px;
+        height: 320px;
+    }
+    
+    .mission-card-front,
+    .mission-card-back {
+        padding: 25px;
+    }
+    
+    .mission-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+    
+    .mission-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    /* Grids */
+    .news-grid,
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .success-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Headers */
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .section-header h2,
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    /* Admin */
+    .admin-nav {
+        width: 100%;
+        height: auto;
+        position: static;
+    }
+    
+    .admin-main {
+        margin-left: 0;
+    }
+    
+    .admin-layout {
+        flex-direction: column;
+    }
+    
+    /* Contact & About */
+    .contact-grid,
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    /* Projects */
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-stats .stat {
+        flex: 0 1 calc(50% - 20px);
+    }
+    
+    /* Post */
+    .post-header,
+    .post-content,
+    .post-actions {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .contact-form-container {
+        padding: 30px 20px;
+    }
+    
+    /* Custom stats */
+    .custom-stat-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .btn-remove-stat {
+        width: 100%;
+    }
+    
+    /* Donate */
+    .donate-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .amount-buttons {
+        flex-direction: column;
+    }
+    
+    .amount-btn {
+        width: 100%;
+    }
+    
+    .donation-frequency {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .update-form .form-group.inline {
+        flex-direction: column;
+    }
+    
+    .update-form input,
+    .update-form button {
+        width: 100%;
+    }
+    
+    /* Schools */
     .school-detail-grid {
         grid-template-columns: 1fr;
     }
@@ -2711,5 +2635,95 @@ main {
     .action-buttons {
         flex-direction: column;
         gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: 40px 0;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    /* Stats */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    /* Forms */
+    .form-container {
+        padding: 30px 20px;
+    }
+    
+    /* Sections */
+    .mission-section,
+    .news-section,
+    .cta-section {
+        padding: 60px 0;
+    }
+    
+    /* Mission cards */
+    .mission-card {
+        height: 300px;
+    }
+    
+    .mission-card-front,
+    .mission-card-back {
+        padding: 20px;
+    }
+    
+    .mission-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .mission-card-back ul li {
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+    }
+    
+    /* Project stats */
+    .project-stats .stat {
+        flex: 0 1 100%;
+    }
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .mission-card:hover .mission-card-front {
+        opacity: 1;
+        transform: rotateY(0deg);
+        z-index: 2;
+    }
+    
+    .mission-card:hover .mission-card-back {
+        opacity: 0;
+        transform: rotateY(180deg);
+        z-index: 1;
+    }
+    
+    .mission-card.flipped .mission-card-front {
+        opacity: 0;
+        transform: rotateY(-180deg);
+        z-index: 1;
+    }
+    
+    .mission-card.flipped .mission-card-back {
+        opacity: 1;
+        transform: rotateY(0deg);
+        z-index: 2;
     }
 }

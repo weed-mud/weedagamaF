@@ -17,6 +17,9 @@
                         <p class="school-location">
                             <i class="fas fa-map-marker-alt"></i> <%= school.location %>
                         </p>
+                        <% if (school.enrollment_status === 'pending') { %>
+                        <span class="status-badge status-onboarding">Being Onboarded</span>
+                        <% } %>
                     </div>
                     
                     <div class="school-content">
