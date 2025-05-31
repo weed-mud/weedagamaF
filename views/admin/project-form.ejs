@@ -1,0 +1,106 @@
+<!-- views/admin/project-form.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= project ? 'Edit' : 'New' %> Project - Weedagama Foundation Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-layout">
+        <nav class="admin-nav">
+            <div class="admin-brand">
+                <h2>Foundation Admin</h2>
+            </div>
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="/admin/projects" class="active"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="/admin/stats"><i class="fas fa-chart-bar"></i> Stats</a></li>
+                <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1><%= project ? 'Edit' : 'Create New' %> Project</h1>
+                <p>Share your ongoing projects and their impact</p>
+            </header>
+            
+            <div class="form-container">
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
+                
+                <form action="<%= project ? '/admin/projects/' + project.id : '/admin/projects' %>" method="POST" class="project-form">
+                    <div class="form-group">
+                        <label for="title">Project Title *</label>
+                        <input type="text" id="title" name="title" 
+                               value="<%= project ? project.title : '' %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Project Description *</label>
+                        <textarea id="description" name="description" rows="6" 
+                                  placeholder="Describe the project and its impact..." required><%= project ? project.description : '' %></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image_url">Project Image URL</label>
+                        <input type="text" id="image_url" name="image_url" 
+                               value="<%= project && project.image_url ? project.image_url : '' %>"
+                               placeholder="/images/project.jpg or https://example.com/image.jpg">
+                        <small>Optional - Use relative path (/images/...) for local images or full URL for external images</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="schools_count">Number of Schools</label>
+                            <input type="number" id="schools_count" name="schools_count" 
+                                   value="<%= project ? project.schools_count : '' %>" min="0">
+                            <small>Leave empty if not applicable</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="students_count">Number of Students</label>
+                            <input type="number" id="students_count" name="students_count" 
+                                   value="<%= project ? project.students_count : '' %>" min="0">
+                            <small>Leave empty if not applicable</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="investment">Investment/Impact Metric</label>
+                        <input type="text" id="investment" name="investment" 
+                               value="<%= project ? project.investment : '' %>"
+                               placeholder="e.g., $45K, 10,000 Meals/Year, 500 Books">
+                        <small>Any relevant metric showing the project's scale or impact</small>
+                    </div>
+                    
+                    <% if (project) { %>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="published" value="1" <%= project.published ? 'checked' : '' %>>
+                            Active (uncheck to save as draft)
+                        </label>
+                    </div>
+                    <% } %>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> <%= project ? 'Update' : 'Create' %> Project
+                        </button>
+                        <a href="/admin/projects" class="btn btn-outline">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

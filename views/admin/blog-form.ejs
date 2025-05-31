@@ -17,22 +17,17 @@
             <ul class="admin-menu">
                 <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
                 <li><a href="/admin/blog" class="active"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="/admin/stats"><i class="fas fa-chart-bar"></i> Stats</a></li>
                 <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
         
         <main class="admin-main">
             <header class="admin-header">
-                <div>
-                    <h1><%= post ? 'Edit' : 'Create New' %> Blog Post</h1>
-                    <p>Share news and updates with your community</p>
-                </div>
-                <div>
-                    <a href="/admin/blog" class="btn btn-outline">
-                        <i class="fas fa-arrow-left"></i> Back to Posts
-                    </a>
-                </div>
+                <h1><%= post ? 'Edit' : 'Create New' %> Blog Post</h1>
+                <p>Share news and updates with your community</p>
             </header>
             
             <div class="form-container">
@@ -42,7 +37,7 @@
                     </div>
                 <% } %>
                 
-                <form action="/admin/blog" method="POST" class="blog-form">
+                <form action="<%= post ? '/admin/blog/' + post.id : '/admin/blog' %>" method="POST" class="blog-form">
                     <div class="form-group">
                         <label for="title">Post Title *</label>
                         <input type="text" id="title" name="title" 
@@ -57,8 +52,8 @@
                     
                     <div class="form-group">
                         <label for="image_url">Featured Image URL</label>
-                        <input type="url" id="image_url" name="image_url" 
-                               value="<%= post ? post.image_url || '' : '' %>"
+                        <input type="text" id="image_url" name="image_url" 
+                               value="<%= post && post.image_url ? post.image_url : '' %>"
                                placeholder="https://example.com/image.jpg">
                         <small>Optional - URL to the featured image for this post</small>
                     </div>
@@ -68,6 +63,15 @@
                         <textarea id="content" name="content" rows="12" 
                                   placeholder="Write your blog post content here..." required><%= post ? post.content : '' %></textarea>
                     </div>
+                    
+                    <% if (post) { %>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="published" value="1" <%= post.published ? 'checked' : '' %>>
+                            Published (uncheck to save as draft)
+                        </label>
+                    </div>
+                    <% } %>
                     
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">

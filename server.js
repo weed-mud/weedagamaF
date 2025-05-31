@@ -98,6 +98,8 @@ db.serialize(() => {
     // Ignore error if column already exists
   });
 
+  
+
   // Blog posts table
   db.run(`CREATE TABLE IF NOT EXISTS blog_posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -105,6 +107,20 @@ db.serialize(() => {
     content TEXT NOT NULL,
     author TEXT NOT NULL,
     image_url TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    published BOOLEAN DEFAULT 1
+  )`);
+
+  //Projects table
+  db.run(`CREATE TABLE IF NOT EXISTS projects (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image_url TEXT,
+    schools_count INTEGER,
+    students_count INTEGER,
+    investment TEXT,
+    status TEXT DEFAULT 'active',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     published BOOLEAN DEFAULT 1
   )`);
@@ -179,6 +195,36 @@ db.serialize(() => {
       samplePosts.forEach(post => {
         db.run(`INSERT INTO blog_posts (title, content, author, image_url) VALUES (?, ?, ?, ?)`,
           [post.title, post.content, post.author, post.image_url]);
+      });
+    }
+  });
+
+  // Insert sample projects if none exist
+  db.get("SELECT COUNT(*) as count FROM projects", (err, row) => {
+    if (row.count === 0) {
+      const sampleProjects = [
+        {
+          title: "Rural Education Initiative",
+          description: "Providing essential school supplies and educational resources to rural schools in Sri Lanka. This ongoing project has benefited over 1,000 students across 25 schools.",
+          image_url: "https://source.unsplash.com/500x250/?school,education,children",
+          schools_count: 25,
+          students_count: 1000,
+          investment: "$45K"
+        },
+        {
+          title: "Food Program",
+          description: "Provide a daily meal cooked on site.",
+          image_url: "/images/food-program.png",
+          schools_count: 5,
+          students_count: 50,
+          investment: "10,000 Meals/Year"
+        }
+      ];
+
+      sampleProjects.forEach(project => {
+        db.run(`INSERT INTO projects (title, description, image_url, schools_count, students_count, investment) 
+                VALUES (?, ?, ?, ?, ?, ?)`,
+          [project.title, project.description, project.image_url, project.schools_count, project.students_count, project.investment]);
       });
     }
   });
@@ -262,7 +308,12 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/projects', (req, res) => {
-  res.render('projects', { title: 'Our Projects' });
+  db.all("SELECT * FROM projects WHERE published = 1 ORDER BY created_at DESC", (err, projects) => {
+    res.render('projects', { 
+      projects: projects || [],
+      title: 'Our Projects'
+    });
+  });
 });
 
 app.get('/apply', (req, res) => {
@@ -471,19 +522,22 @@ app.get('/admin/logout', (req, res) => {
 app.get('/admin/dashboard', requireAuth, (req, res) => {
   db.all("SELECT COUNT(*) as count FROM applications WHERE status = 'pending'", (err, pendingApps) => {
     db.all("SELECT COUNT(*) as count FROM blog_posts", (err, totalPosts) => {
-      db.all("SELECT * FROM stats", (err, statsRows) => {
-        const stats = {};
-        if (statsRows) {
-          statsRows.forEach(row => {
-            stats[row.stat_key] = row.stat_value;
+      db.all("SELECT COUNT(*) as count FROM projects WHERE published = 1", (err, totalProjects) => {
+        db.all("SELECT * FROM stats", (err, statsRows) => {
+          const stats = {};
+          if (statsRows) {
+            statsRows.forEach(row => {
+              stats[row.stat_key] = row.stat_value;
+            });
+          }
+          
+          res.render('admin/dashboard', { 
+            pendingApplications: pendingApps[0] ? pendingApps[0].count : 0,
+            totalPosts: totalPosts[0] ? totalPosts[0].count : 0,
+            totalProjects: totalProjects[0] ? totalProjects[0].count : 0,
+            stats: stats,
+            title: 'Admin Dashboard'
           });
-        }
-        
-        res.render('admin/dashboard', { 
-          pendingApplications: pendingApps[0] ? pendingApps[0].count : 0,
-          totalPosts: totalPosts[0] ? totalPosts[0].count : 0,
-          stats: stats,
-          title: 'Admin Dashboard'
         });
       });
     });
@@ -601,6 +655,90 @@ app.post('/admin/blog/:id/delete', requireAuth, (req, res) => {
       console.error(err);
     }
     res.redirect('/admin/blog');
+  });
+});
+
+// Admin project routes
+app.get('/admin/projects', requireAuth, (req, res) => {
+  db.all("SELECT * FROM projects ORDER BY created_at DESC", (err, projects) => {
+    res.render('admin/projects', { 
+      projects: projects || [],
+      title: 'Projects Management'
+    });
+  });
+});
+
+app.get('/admin/projects/new', requireAuth, (req, res) => {
+  res.render('admin/project-form', { 
+    project: null,
+    title: 'Create New Project'
+  });
+});
+
+app.post('/admin/projects', requireAuth, (req, res) => {
+  const { title, description, image_url, schools_count, students_count, investment } = req.body;
+  
+  db.run(`INSERT INTO projects (title, description, image_url, schools_count, students_count, investment) 
+          VALUES (?, ?, ?, ?, ?, ?)`,
+    [title, description, image_url, schools_count || 0, students_count || 0, investment || ''], 
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.render('admin/project-form', { 
+          error: 'Failed to create project',
+          project: req.body,
+          title: 'Create New Project'
+        });
+      }
+      res.redirect('/admin/projects');
+    });
+});
+
+app.get('/admin/projects/edit/:id', requireAuth, (req, res) => {
+  const { id } = req.params;
+  
+  db.get("SELECT * FROM projects WHERE id = ?", [id], (err, project) => {
+    if (err || !project) {
+      return res.redirect('/admin/projects');
+    }
+    res.render('admin/project-form', { 
+      project,
+      title: 'Edit Project'
+    });
+  });
+});
+
+app.post('/admin/projects/:id', requireAuth, (req, res) => {
+  const { id } = req.params;
+  const { title, description, image_url, schools_count, students_count, investment, published } = req.body;
+  
+  db.run(`UPDATE projects 
+          SET title = ?, description = ?, image_url = ?, schools_count = ?, students_count = ?, 
+              investment = ?, published = ? 
+          WHERE id = ?`,
+    [title, description, image_url, schools_count || 0, students_count || 0, 
+     investment || '', published ? 1 : 0, id], 
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.render('admin/project-form', { 
+          error: 'Failed to update project',
+          project: { id, ...req.body },
+          title: 'Edit Project'
+        });
+      }
+      res.redirect('/admin/projects');
+    });
+});
+
+app.post('/admin/projects/:id/delete', requireAuth, (req, res) => {
+  const { id } = req.params;
+  
+  db.run("DELETE FROM projects WHERE id = ?", [id], (err) => {
+    if (err) {
+      console.error(err);
+    }
+    res.redirect('/admin/projects');
   });
 });
 

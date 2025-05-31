@@ -16,6 +16,7 @@
             <ul class="admin-menu">
                 <li><a href="/admin/dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
                 <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
                 <li><a href="/admin/stats"><i class="fas fa-chart-bar"></i> Manage Stats</a></li>
                 <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -46,6 +47,16 @@
                     <div class="stat-content">
                         <h3><%= totalPosts %></h3>
                         <p>Blog Posts</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3><%= totalProjects || 0 %></h3>
+                        <p>Active Projects</p>
                     </div>
                 </div>
                 

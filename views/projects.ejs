@@ -8,54 +8,47 @@
 
 <section class="projects-section">
     <div class="container">
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="https://source.unsplash.com/500x250/?school,education,children" alt="Education Project">
-                </div>
-                <div class="project-content">
-                    <h3>Rural Education Initiative</h3>
-                    <p>Providing essential school supplies and educational resources to rural schools in Sri Lanka. This ongoing project has benefited over 1,000 students across 25 schools.</p>
-                    <div class="project-stats">
-                        <div class="stat">
-                            <span class="number">25</span>
-                            <span class="label">Schools</span>
-                        </div>
-                        <div class="stat">
-                            <span class="number">1,000+</span>
-                            <span class="label">Students</span>
-                        </div>
-                        <div class="stat">
-                            <span class="number">$45K</span>
-                            <span class="label">Invested</span>
+        <% if (projects && projects.length > 0) { %>
+            <div class="projects-grid">
+                <% projects.forEach(project => { %>
+                <div class="project-card">
+                    <% if (project.image_url) { %>
+                    <div class="project-image">
+                        <img src="<%= project.image_url %>" alt="<%= project.title %>">
+                    </div>
+                    <% } %>
+                    <div class="project-content">
+                        <h3><%= project.title %></h3>
+                        <p><%= project.description %></p>
+                        <div class="project-stats">
+                            <% if (project.schools_count > 0) { %>
+                            <div class="stat">
+                                <span class="number"><%= project.schools_count %></span>
+                                <span class="label">Schools</span>
+                            </div>
+                            <% } %>
+                            <% if (project.students_count > 0) { %>
+                            <div class="stat">
+                                <span class="number"><%= project.students_count %>+</span>
+                                <span class="label">Students</span>
+                            </div>
+                            <% } %>
+                            <% if (project.investment) { %>
+                            <div class="stat">
+                                <span class="number"><%= project.investment %></span>
+                                <span class="label">Invested</span>
+                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
+                <% }) %>
             </div>
-            
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="https://source.unsplash.com/500x250/?medical,healthcare,hospital" alt="Healthcare Project">
-                </div>
-                <div class="project-content">
-                    <h3>Medical Equipment Support</h3>
-                    <p>Donated essential medical equipment to healthcare facilities in underserved communities, improving access to quality healthcare for thousands of patients.</p>
-                    <div class="project-stats">
-                        <div class="stat">
-                            <span class="number">12</span>
-                            <span class="label">Facilities</span>
-                        </div>
-                        <div class="stat">
-                            <span class="number">5,000+</span>
-                            <span class="label">Patients</span>
-                        </div>
-                        <div class="stat">
-                            <span class="number">$80K</span>
-                            <span class="label">Equipment Value</span>
-                        </div>
-                    </div>
-                </div>
+        <% } else { %>
+            <div style="text-align: center; padding: 60px 20px;">
+                <h3>Projects coming soon</h3>
+                <p>We're working on documenting our ongoing projects. Check back soon!</p>
             </div>
-        </div>
+        <% } %>
     </div>
 </section>
