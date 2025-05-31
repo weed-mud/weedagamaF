@@ -1,0 +1,111 @@
+<!-- views/school-detail.ejs -->
+<section class="page-header">
+    <div class="container">
+        <h1><%= school.name %></h1>
+        <p><i class="fas fa-map-marker-alt"></i> <%= school.location %></p>
+    </div>
+</section>
+
+<section class="school-detail-section">
+    <div class="container">
+        <div class="school-detail-grid">
+            <div class="school-main-info">
+                <div class="info-card">
+                    <h2>About This School</h2>
+                    <p><%= school.description || 'No description available.' %></p>
+                    
+                    <% if (school.enrolled_date) { %>
+                    <div class="enrollment-info">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Partner since <%= new Date(school.enrolled_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) %></span>
+                    </div>
+                    <% } %>
+                </div>
+                
+                <div class="info-card">
+                    <h3>School Statistics</h3>
+                    <div class="detail-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <div>
+                                <h4><%= school.student_count || 'N/A' %></h4>
+                                <p>Students</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <h4><%= school.teacher_count || 'N/A' %></h4>
+                                <p>Teachers</p>
+                            </div>
+                        </div>
+                        <% if (school.grades) { %>
+                        <div class="stat-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div>
+                                <h4><%= school.grades %></h4>
+                                <p>Grades</p>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+                
+                <% if (school.principal_name) { %>
+                <div class="info-card">
+                    <h3>School Leadership</h3>
+                    <p><strong>Principal:</strong> <%= school.principal_name %></p>
+                </div>
+                <% } %>
+            </div>
+            
+            <div class="school-sidebar">
+                <% if (school.contact_email || school.contact_phone) { %>
+                <div class="info-card">
+                    <h3>Contact Information</h3>
+                    <% if (school.contact_email) { %>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:<%= school.contact_email %>"><%= school.contact_email %></a></p>
+                    <% } %>
+                    <% if (school.contact_phone) { %>
+                    <p><i class="fas fa-phone"></i> <%= school.contact_phone %></p>
+                    <% } %>
+                </div>
+                <% } %>
+                
+                <% if (school.facebook_url || school.twitter_url || school.instagram_url || school.website_url) { %>
+                <div class="info-card">
+                    <h3>Connect Online</h3>
+                    <div class="social-links-school">
+                        <% if (school.website_url) { %>
+                        <a href="<%= school.website_url %>" target="_blank" class="social-link">
+                            <i class="fas fa-globe"></i> Website
+                        </a>
+                        <% } %>
+                        <% if (school.facebook_url) { %>
+                        <a href="<%= school.facebook_url %>" target="_blank" class="social-link">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </a>
+                        <% } %>
+                        <% if (school.twitter_url) { %>
+                        <a href="<%= school.twitter_url %>" target="_blank" class="social-link">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        <% } %>
+                        <% if (school.instagram_url) { %>
+                        <a href="<%= school.instagram_url %>" target="_blank" class="social-link">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="/schools" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Back to All Schools
+            </a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,185 @@
+<!-- views/admin/school-form.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= school ? 'Edit' : 'Add New' %> School - Weedagama Foundation Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-layout">
+        <nav class="admin-nav">
+            <div class="admin-brand">
+                <h2>Foundation Admin</h2>
+            </div>
+            <ul class="admin-menu">
+                <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/applications"><i class="fas fa-file-alt"></i> Applications</a></li>
+                <li><a href="/admin/projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="/admin/schools" class="active"><i class="fas fa-school"></i> Schools</a></li>
+                <li><a href="/admin/blog"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="/admin/stats"><i class="fas fa-chart-bar"></i> Stats</a></li>
+                <li><a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1><%= school ? 'Edit' : 'Add New' %> School</h1>
+                <p>Manage partner school information</p>
+            </header>
+            
+            <div class="form-container">
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
+                
+                <form action="<%= school ? '/admin/schools/' + school.id : '/admin/schools' %>" method="POST">
+                    <div class="form-section">
+                        <h2>Basic Information</h2>
+                        
+                        <div class="form-group">
+                            <label for="name">School Name *</label>
+                            <input type="text" id="name" name="name" value="<%= school ? school.name : '' %>" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" name="location" value="<%= school ? school.location : '' %>" 
+                                   placeholder="City, State/Province, Country" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="4" 
+                                      placeholder="Brief description of the school and its needs..."><%= school ? school.description : '' %></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="principal_name">Principal Name</label>
+                                <input type="text" id="principal_name" name="principal_name" 
+                                       value="<%= school ? school.principal_name : '' %>">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="grades">Grades</label>
+                                <input type="text" id="grades" name="grades" 
+                                       value="<%= school ? school.grades : '' %>"
+                                       placeholder="e.g., K-5, 1-8, 9-12">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="student_count">Number of Students</label>
+                                <input type="number" id="student_count" name="student_count" 
+                                       value="<%= school ? school.student_count : '' %>" min="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="teacher_count">Number of Teachers</label>
+                                <input type="number" id="teacher_count" name="teacher_count" 
+                                       value="<%= school ? school.teacher_count : '' %>" min="0">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Contact Information</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact_email">Contact Email</label>
+                                <input type="email" id="contact_email" name="contact_email" 
+                                       value="<%= school ? school.contact_email : '' %>">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact_phone">Contact Phone</label>
+                                <input type="tel" id="contact_phone" name="contact_phone" 
+                                       value="<%= school ? school.contact_phone : '' %>">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Social Media & Website</h2>
+                        
+                        <div class="form-group">
+                            <label for="website_url">Website URL</label>
+                            <input type="url" id="website_url" name="website_url" 
+                                   value="<%= school ? school.website_url : '' %>"
+                                   placeholder="https://example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="facebook_url">Facebook URL</label>
+                            <input type="url" id="facebook_url" name="facebook_url" 
+                                   value="<%= school ? school.facebook_url : '' %>"
+                                   placeholder="https://facebook.com/...">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="twitter_url">Twitter URL</label>
+                                <input type="url" id="twitter_url" name="twitter_url" 
+                                       value="<%= school ? school.twitter_url : '' %>"
+                                       placeholder="https://twitter.com/...">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="instagram_url">Instagram URL</label>
+                                <input type="url" id="instagram_url" name="instagram_url" 
+                                       value="<%= school ? school.instagram_url : '' %>"
+                                       placeholder="https://instagram.com/...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Enrollment Status</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="enrollment_status">Status</label>
+                                <select id="enrollment_status" name="enrollment_status">
+                                    <option value="pending" <%= school && school.enrollment_status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="active" <%= school && school.enrollment_status === 'active' ? 'selected' : '' %>>Active</option>
+                                    <option value="inactive" <%= school && school.enrollment_status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="enrolled_date">Enrolled Date</label>
+                                <input type="date" id="enrolled_date" name="enrolled_date" 
+                                       value="<%= school && school.enrolled_date ? school.enrolled_date.split('T')[0] : '' %>">
+                            </div>
+                            
+                            <% if (school) { %>
+                            <div class="form-group">
+                                <label for="removed_date">Removed Date</label>
+                                <input type="date" id="removed_date" name="removed_date" 
+                                       value="<%= school.removed_date ? school.removed_date.split('T')[0] : '' %>">
+                                <small>Set automatically when status changes to inactive</small>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> <%= school ? 'Update' : 'Add' %> School
+                        </button>
+                        <a href="/admin/schools" class="btn btn-outline">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

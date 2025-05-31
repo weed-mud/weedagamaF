@@ -1,0 +1,63 @@
+<!-- views/schools.ejs -->
+<section class="page-header">
+    <div class="container">
+        <h1>Our Partner Schools</h1>
+        <p>Working together to create brighter futures for students</p>
+    </div>
+</section>
+
+<section class="schools-section">
+    <div class="container">
+        <% if (schools && schools.length > 0) { %>
+            <div class="schools-grid">
+                <% schools.forEach(school => { %>
+                <div class="school-card">
+                    <div class="school-header">
+                        <h3><%= school.name %></h3>
+                        <p class="school-location">
+                            <i class="fas fa-map-marker-alt"></i> <%= school.location %>
+                        </p>
+                    </div>
+                    
+                    <div class="school-content">
+                        <p class="school-description"><%= school.description || 'No description available.' %></p>
+                        
+                        <div class="school-stats">
+                            <% if (school.student_count) { %>
+                            <div class="stat">
+                                <i class="fas fa-user-graduate"></i>
+                                <span><%= school.student_count %> Students</span>
+                            </div>
+                            <% } %>
+                            <% if (school.teacher_count) { %>
+                            <div class="stat">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <span><%= school.teacher_count %> Teachers</span>
+                            </div>
+                            <% } %>
+                            <% if (school.grades) { %>
+                            <div class="stat">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span><%= school.grades %></span>
+                            </div>
+                            <% } %>
+                        </div>
+                        
+                        <div class="school-actions">
+                            <a href="/schools/<%= school.id %>" class="btn btn-primary btn-small">
+                                View Details <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <i class="fas fa-school"></i>
+                <h3>No schools listed yet</h3>
+                <p>We're currently finalizing partnerships with schools. Check back soon!</p>
+            </div>
+        <% } %>
+    </div>
+</section>

@@ -98,6 +98,28 @@ db.serialize(() => {
     // Ignore error if column already exists
   });
 
+//Schools table
+  db.run(`CREATE TABLE IF NOT EXISTS schools (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    location TEXT NOT NULL,
+    description TEXT,
+    grades TEXT,
+    student_count INTEGER,
+    teacher_count INTEGER,
+    enrollment_status TEXT DEFAULT 'pending',
+    enrolled_date DATE,
+    removed_date DATE,
+    facebook_url TEXT,
+    twitter_url TEXT,
+    instagram_url TEXT,
+    website_url TEXT,
+    contact_email TEXT,
+    contact_phone TEXT,
+    principal_name TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
   
 
   // Blog posts table
@@ -172,6 +194,51 @@ db.serialize(() => {
       defaultStats.forEach(stat => {
         db.run("INSERT INTO stats (stat_key, stat_value) VALUES (?, ?)", 
           [stat.key, stat.value]);
+      });
+    }
+  });
+
+  //insert sample schools:
+  db.get("SELECT COUNT(*) as count FROM schools", (err, row) => {
+    if (row.count === 0) {
+      const sampleSchools = [
+        {
+          name: "Sunshine Primary School",
+          location: "Colombo, Sri Lanka",
+          description: "A rural primary school serving 250 students from farming communities. In need of educational supplies and infrastructure improvements.",
+          grades: "Grades 1-5",
+          student_count: 250,
+          teacher_count: 12,
+          enrollment_status: "active",
+          enrolled_date: "2024-01-15",
+          principal_name: "Ms. Kamala Perera",
+          contact_email: "sunshine.primary@example.com",
+          contact_phone: "+94 11 234 5678"
+        },
+        {
+          name: "Mountain View Secondary School",
+          location: "Kandy, Sri Lanka",
+          description: "Located in the hill country, this school serves students from tea plantation communities with limited resources.",
+          grades: "Grades 6-11",
+          student_count: 180,
+          teacher_count: 15,
+          enrollment_status: "active",
+          enrolled_date: "2024-03-01",
+          principal_name: "Mr. Sunil Fernando",
+          contact_email: "mountainview@example.com"
+        }
+      ];
+
+      sampleSchools.forEach(school => {
+        db.run(`INSERT INTO schools (
+          name, location, description, grades, student_count, teacher_count,
+          enrollment_status, enrolled_date, principal_name, contact_email, contact_phone
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [school.name, school.location, school.description, school.grades, 
+          school.student_count, school.teacher_count, school.enrollment_status,
+          school.enrolled_date, school.principal_name, school.contact_email, 
+          school.contact_phone || null]
+        );
       });
     }
   });
@@ -326,6 +393,34 @@ app.get('/projects', (req, res) => {
 
 app.get('/apply', (req, res) => {
   res.render('apply', { title: 'Apply for Support' });
+});
+
+// Public routes for schools
+app.get('/schools', (req, res) => {
+  db.all("SELECT * FROM schools WHERE enrollment_status = 'active' ORDER BY name ASC", (err, schools) => {
+    res.render('schools', { 
+      schools: schools || [],
+      title: 'Partner Schools'
+    });
+  });
+});
+
+app.get('/schools/:id', (req, res) => {
+  const { id } = req.params;
+  db.get("SELECT * FROM schools WHERE id = ? AND enrollment_status = 'active'", [id], (err, school) => {
+    if (err || !school) {
+      return res.redirect('/schools');
+    }
+    res.render('school-detail', { 
+      school,
+      title: school.name
+    });
+  });
+});
+
+// Volunteer page
+app.get('/volunteer', (req, res) => {
+  res.render('volunteer', { title: 'Volunteer Opportunities' });
 });
 
 app.get('/blog', (req, res) => {
@@ -552,20 +647,23 @@ app.get('/admin/dashboard', requireAuth, (req, res) => {
   db.all("SELECT COUNT(*) as count FROM applications WHERE status = 'pending'", (err, pendingApps) => {
     db.all("SELECT COUNT(*) as count FROM blog_posts", (err, totalPosts) => {
       db.all("SELECT COUNT(*) as count FROM projects WHERE published = 1", (err, totalProjects) => {
-        db.all("SELECT * FROM stats", (err, statsRows) => {
-          const stats = {};
-          if (statsRows) {
-            statsRows.forEach(row => {
-              stats[row.stat_key] = row.stat_value;
+        db.all("SELECT COUNT(*) as count FROM schools WHERE enrollment_status = 'active'", (err, activeSchools) => {
+          db.all("SELECT * FROM stats", (err, statsRows) => {
+            const stats = {};
+            if (statsRows) {
+              statsRows.forEach(row => {
+                stats[row.stat_key] = row.stat_value;
+              });
+            }
+            
+            res.render('admin/dashboard', { 
+              pendingApplications: pendingApps[0] ? pendingApps[0].count : 0,
+              totalPosts: totalPosts[0] ? totalPosts[0].count : 0,
+              totalProjects: totalProjects[0] ? totalProjects[0].count : 0,
+              activeSchools: activeSchools[0] ? activeSchools[0].count : 0,
+              stats: stats,
+              title: 'Admin Dashboard'
             });
-          }
-          
-          res.render('admin/dashboard', { 
-            pendingApplications: pendingApps[0] ? pendingApps[0].count : 0,
-            totalPosts: totalPosts[0] ? totalPosts[0].count : 0,
-            totalProjects: totalProjects[0] ? totalProjects[0].count : 0,
-            stats: stats,
-            title: 'Admin Dashboard'
           });
         });
       });
@@ -684,6 +782,109 @@ app.post('/admin/blog/:id/delete', requireAuth, (req, res) => {
       console.error(err);
     }
     res.redirect('/admin/blog');
+  });
+});
+
+// Admin routes for schools
+app.get('/admin/schools', requireAuth, (req, res) => {
+  db.all("SELECT * FROM schools ORDER BY enrollment_status, name ASC", (err, schools) => {
+    res.render('admin/schools', { 
+      schools: schools || [],
+      title: 'Schools Management'
+    });
+  });
+});
+
+app.get('/admin/schools/new', requireAuth, (req, res) => {
+  res.render('admin/school-form', { 
+    school: null,
+    title: 'Add New School'
+  });
+});
+
+app.post('/admin/schools', requireAuth, (req, res) => {
+  const {
+    name, location, description, grades, student_count, teacher_count,
+    enrollment_status, enrolled_date, facebook_url, twitter_url, 
+    instagram_url, website_url, contact_email, contact_phone, principal_name
+  } = req.body;
+  
+  db.run(`INSERT INTO schools (
+    name, location, description, grades, student_count, teacher_count,
+    enrollment_status, enrolled_date, facebook_url, twitter_url, 
+    instagram_url, website_url, contact_email, contact_phone, principal_name
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [name, location, description, grades, student_count || 0, teacher_count || 0,
+     enrollment_status || 'pending', enrolled_date || null, facebook_url, twitter_url,
+     instagram_url, website_url, contact_email, contact_phone, principal_name],
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.render('admin/school-form', { 
+          error: 'Failed to add school',
+          school: req.body,
+          title: 'Add New School'
+        });
+      }
+      res.redirect('/admin/schools');
+    });
+});
+
+app.get('/admin/schools/edit/:id', requireAuth, (req, res) => {
+  const { id } = req.params;
+  db.get("SELECT * FROM schools WHERE id = ?", [id], (err, school) => {
+    if (err || !school) {
+      return res.redirect('/admin/schools');
+    }
+    res.render('admin/school-form', { 
+      school,
+      title: 'Edit School'
+    });
+  });
+});
+
+app.post('/admin/schools/:id', requireAuth, (req, res) => {
+  const { id } = req.params;
+  const {
+    name, location, description, grades, student_count, teacher_count,
+    enrollment_status, enrolled_date, removed_date, facebook_url, twitter_url, 
+    instagram_url, website_url, contact_email, contact_phone, principal_name
+  } = req.body;
+  
+  // Set removed_date if status changes to inactive
+  let finalRemovedDate = removed_date;
+  if (enrollment_status === 'inactive' && !removed_date) {
+    finalRemovedDate = new Date().toISOString().split('T')[0];
+  }
+  
+  db.run(`UPDATE schools SET 
+    name = ?, location = ?, description = ?, grades = ?, 
+    student_count = ?, teacher_count = ?, enrollment_status = ?, 
+    enrolled_date = ?, removed_date = ?, facebook_url = ?, 
+    twitter_url = ?, instagram_url = ?, website_url = ?, 
+    contact_email = ?, contact_phone = ?, principal_name = ?,
+    updated_at = datetime('now')
+    WHERE id = ?`,
+    [name, location, description, grades, student_count || 0, teacher_count || 0,
+     enrollment_status, enrolled_date || null, finalRemovedDate || null, 
+     facebook_url, twitter_url, instagram_url, website_url, 
+     contact_email, contact_phone, principal_name, id],
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.redirect('/admin/schools/edit/' + id + '?error=1');
+      }
+      res.redirect('/admin/schools');
+    });
+});
+
+app.post('/admin/schools/:id/delete', requireAuth, (req, res) => {
+  const { id } = req.params;
+  db.run("DELETE FROM schools WHERE id = ?", [id], (err) => {
+    if (err) {
+      console.error(err);
+    }
+    res.redirect('/admin/schools');
   });
 });
 
