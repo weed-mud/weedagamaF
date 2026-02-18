@@ -104,6 +104,24 @@
                     </div>
                 </div>
                 <% } %>
+                
+                <% if (school.links && school.links.length > 0) { %>
+                <div class="info-card">
+                    <h3>Links & Articles</h3>
+                    <div class="school-links-list">
+                        <% school.links.forEach(link => { %>
+                        <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" class="social-link">
+                            <% 
+                            const icons = { youtube: 'fab fa-youtube', instagram: 'fab fa-instagram', article: 'fas fa-newspaper', website: 'fas fa-globe', other: 'fas fa-link' };
+                            const icon = icons[link.link_type] || icons.other;
+                            %>
+                            <i class="<%= icon %>"></i>
+                            <%= link.title || (link.link_type.charAt(0).toUpperCase() + link.link_type.slice(1)) %>
+                        </a>
+                        <% }); %>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
         

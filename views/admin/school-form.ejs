@@ -142,6 +142,107 @@
                     </div>
                     
                     <div class="form-section">
+                        <h2>Links & Articles</h2>
+                        <p class="form-help">Add links to YouTube videos, Instagram posts, website articles, or other content about this school.</p>
+                        
+                        <div id="links-container">
+                            <% const links = school && school.links ? school.links : []; %>
+                            <% if (links.length > 0) { %>
+                                <% links.forEach((link, index) => { %>
+                                <div class="link-row">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Title / Label</label>
+                                            <input type="text" name="link_title[]" value="<%= link.title || '' %>" 
+                                                   placeholder="e.g., School tour video">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Type</label>
+                                            <select name="link_type[]">
+                                                <option value="youtube" <%= link.link_type === 'youtube' ? 'selected' : '' %>>YouTube</option>
+                                                <option value="instagram" <%= link.link_type === 'instagram' ? 'selected' : '' %>>Instagram</option>
+                                                <option value="article" <%= link.link_type === 'article' ? 'selected' : '' %>>Article</option>
+                                                <option value="website" <%= link.link_type === 'website' ? 'selected' : '' %>>Website</option>
+                                                <option value="other" <%= link.link_type === 'other' || !link.link_type ? 'selected' : '' %>>Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL</label>
+                                        <div class="link-row-input">
+                                            <input type="url" name="link_url[]" value="<%= link.url || '' %>" 
+                                                   placeholder="https://...">
+                                            <button type="button" class="btn btn-outline btn-small remove-link" title="Remove link">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="link-row">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Title / Label</label>
+                                            <input type="text" name="link_title[]" placeholder="e.g., School tour video">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Type</label>
+                                            <select name="link_type[]">
+                                                <option value="youtube">YouTube</option>
+                                                <option value="instagram">Instagram</option>
+                                                <option value="article">Article</option>
+                                                <option value="website">Website</option>
+                                                <option value="other" selected>Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>URL</label>
+                                        <div class="link-row-input">
+                                            <input type="url" name="link_url[]" placeholder="https://...">
+                                            <button type="button" class="btn btn-outline btn-small remove-link" title="Remove link">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                        <button type="button" id="add-link-btn" class="btn btn-outline">+ Add Link</button>
+                    </div>
+                    
+                    <template id="link-row-template">
+                        <div class="link-row">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title / Label</label>
+                                    <input type="text" name="link_title[]" placeholder="e.g., School tour video">
+                                </div>
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <select name="link_type[]">
+                                        <option value="youtube">YouTube</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="article">Article</option>
+                                        <option value="website">Website</option>
+                                        <option value="other" selected>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>URL</label>
+                                <div class="link-row-input">
+                                    <input type="url" name="link_url[]" placeholder="https://...">
+                                    <button type="button" class="btn btn-outline btn-small remove-link" title="Remove link">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <div class="form-section">
                         <h2>Enrollment Status</h2>
                         
                         <div class="form-row">
@@ -181,5 +282,21 @@
             </div>
         </main>
     </div>
+    <script>
+        document.getElementById('add-link-btn').addEventListener('click', function() {
+            const template = document.getElementById('link-row-template');
+            const clone = template.content.cloneNode(true);
+            document.getElementById('links-container').appendChild(clone);
+        });
+        
+        document.getElementById('links-container').addEventListener('click', function(e) {
+            if (e.target.closest('.remove-link')) {
+                const row = e.target.closest('.link-row');
+                if (document.querySelectorAll('.link-row').length > 1) {
+                    row.remove();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

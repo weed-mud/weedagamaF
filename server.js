@@ -27,8 +27,16 @@ morgan.token('real-ip', (req) => {
 // Custom morgan format with real IP
 const logFormat = ':real-ip - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"';
 
-// Security middleware
-app.use(helmet());
+// Security middleware - CSP allows Google Tag Manager
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      'script-src': ["'self'", "https://www.googletagmanager.com", "'unsafe-inline'"],
+      'connect-src': ["'self'", "https://www.google-analytics.com", "https://www.googletagmanager.com"],
+      'img-src': ["'self'", "data:", "https:", "https://www.google-analytics.com", "https://www.googletagmanager.com"]
+    }
+  }
+}));
 app.use(morgan(logFormat));
 
 // Middleware to log IP for debugging (optional)
@@ -120,7 +128,17 @@ db.serialize(() => {
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
-  
+
+  // School links table (YouTube videos, articles, Instagram posts, etc.)
+  db.run(`CREATE TABLE IF NOT EXISTS school_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    school_id INTEGER NOT NULL,
+    url TEXT NOT NULL,
+    title TEXT,
+    link_type TEXT DEFAULT 'other',
+    display_order INTEGER DEFAULT 0,
+    FOREIGN KEY (school_id) REFERENCES schools(id) ON DELETE CASCADE
+  )`);
 
   // Blog posts table
   db.run(`CREATE TABLE IF NOT EXISTS blog_posts (
@@ -411,9 +429,12 @@ app.get('/schools/:id', (req, res) => {
     if (err || !school) {
       return res.redirect('/schools');
     }
-    res.render('school-detail', { 
-      school,
-      title: school.name
+    db.all("SELECT * FROM school_links WHERE school_id = ? ORDER BY display_order, id", [id], (errLinks, links) => {
+      school.links = links || [];
+      res.render('school-detail', { 
+        school,
+        title: school.name
+      });
     });
   });
 });
@@ -810,6 +831,10 @@ app.post('/admin/schools', requireAuth, (req, res) => {
     instagram_url, website_url, contact_email, contact_phone, principal_name
   } = req.body;
   
+  const linkUrls = [].concat(req.body.link_url || []);
+  const linkTitles = [].concat(req.body.link_title || []);
+  const linkTypes = [].concat(req.body.link_type || []);
+  
   db.run(`INSERT INTO schools (
     name, location, description, grades, student_count, teacher_count,
     enrollment_status, enrolled_date, facebook_url, twitter_url, 
@@ -818,7 +843,7 @@ app.post('/admin/schools', requireAuth, (req, res) => {
     [name, location, description, grades, student_count || 0, teacher_count || 0,
      enrollment_status || 'pending', enrolled_date || null, facebook_url, twitter_url,
      instagram_url, website_url, contact_email, contact_phone, principal_name],
-    (err) => {
+    function(err) {
       if (err) {
         console.error(err);
         return res.render('admin/school-form', { 
@@ -827,6 +852,14 @@ app.post('/admin/schools', requireAuth, (req, res) => {
           title: 'Add New School'
         });
       }
+      const schoolId = this.lastID;
+      const stmt = db.prepare('INSERT INTO school_links (school_id, url, title, link_type, display_order) VALUES (?, ?, ?, ?, ?)');
+      linkUrls.forEach((url, i) => {
+        if (url && url.trim()) {
+          stmt.run(schoolId, url.trim(), (linkTitles[i] || '').trim(), linkTypes[i] || 'other', i);
+        }
+      });
+      stmt.finalize();
       res.redirect('/admin/schools');
     });
 });
@@ -837,9 +870,12 @@ app.get('/admin/schools/edit/:id', requireAuth, (req, res) => {
     if (err || !school) {
       return res.redirect('/admin/schools');
     }
-    res.render('admin/school-form', { 
-      school,
-      title: 'Edit School'
+    db.all("SELECT * FROM school_links WHERE school_id = ? ORDER BY display_order, id", [id], (errLinks, links) => {
+      school.links = links || [];
+      res.render('admin/school-form', { 
+        school,
+        title: 'Edit School'
+      });
     });
   });
 });
@@ -851,6 +887,10 @@ app.post('/admin/schools/:id', requireAuth, (req, res) => {
     enrollment_status, enrolled_date, removed_date, facebook_url, twitter_url, 
     instagram_url, website_url, contact_email, contact_phone, principal_name
   } = req.body;
+  
+  const linkUrls = [].concat(req.body.link_url || []);
+  const linkTitles = [].concat(req.body.link_title || []);
+  const linkTypes = [].concat(req.body.link_type || []);
   
   // Set removed_date if status changes to inactive
   let finalRemovedDate = removed_date;
@@ -875,7 +915,16 @@ app.post('/admin/schools/:id', requireAuth, (req, res) => {
         console.error(err);
         return res.redirect('/admin/schools/edit/' + id + '?error=1');
       }
-      res.redirect('/admin/schools');
+      db.run('DELETE FROM school_links WHERE school_id = ?', [id], () => {
+        const stmt = db.prepare('INSERT INTO school_links (school_id, url, title, link_type, display_order) VALUES (?, ?, ?, ?, ?)');
+        linkUrls.forEach((url, i) => {
+          if (url && url.trim()) {
+            stmt.run(id, url.trim(), (linkTitles[i] || '').trim(), linkTypes[i] || 'other', i);
+          }
+        });
+        stmt.finalize();
+        res.redirect('/admin/schools');
+      });
     });
 });
 

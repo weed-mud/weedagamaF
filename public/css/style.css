@@ -2088,10 +2088,39 @@ main {
     font-size: 0.9rem;
 }
 
-.social-links-school {
+.social-links-school,
+.school-links-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+/* Links & Articles form section */
+.link-row {
+    background: var(--bg-light);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.link-row-input {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.link-row-input input {
+    flex: 1;
+}
+
+.form-help {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+#add-link-btn {
+    margin-bottom: 30px;
 }
 
 .social-link {
