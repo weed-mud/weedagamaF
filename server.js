@@ -322,6 +322,23 @@ db.serialize(() => {
     }
   });
 
+  // Add Tuition Fee Subsidy project if it doesn't exist
+  db.get("SELECT id FROM projects WHERE title LIKE '%Tuition%'", (err, row) => {
+    if (!err && !row) {
+      db.run(`INSERT INTO projects (title, description, image_url, schools_count, students_count, investment, display_order, published) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
+        [
+          'Tuition Fee Subsidy',
+          'We subsidize tuition fees for pre-K and kindergarten schools, making early childhood education accessible to families in underserved rural communities. By reducing the financial barrier to quality early education, we help ensure that young children can build a strong foundation for their academic journey.',
+          '/images/tution_subsidy.png',
+          2,
+          20,
+          'Ongoing',
+          0
+        ]);
+    }
+  });
+
   // Create default admin user
   db.get("SELECT COUNT(*) as count FROM users", (err, row) => {
     if (row.count === 0) {
