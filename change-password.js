@@ -1,4 +1,5 @@
 // change-password.js
+const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 
@@ -12,7 +13,8 @@ if (!newPassword) {
 }
 
 // Connect to database
-const db = new sqlite3.Database('foundation.db');
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'foundation.db');
+const db = new sqlite3.Database(dbPath);
 
 // Hash the new password
 bcrypt.hash(newPassword, 10, (err, hash) => {

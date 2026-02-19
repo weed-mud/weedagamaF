@@ -79,8 +79,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Initialize SQLite database
-const db = new sqlite3.Database('foundation.db');
+// Initialize SQLite database - use path relative to app dir so it works regardless of cwd
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'foundation.db');
+const db = new sqlite3.Database(dbPath);
 
 // Create tables
 db.serialize(() => {
@@ -1203,6 +1204,7 @@ function requireAuth(req, res, next) {
 
 app.listen(PORT, () => {
   console.log(`Weedagama Foundation website running on port ${PORT}`);
+  console.log(`Database: ${dbPath}`);
   console.log(`Visit: http://localhost:${PORT}`);
   console.log(`Admin: http://localhost:${PORT}/admin/login`);
 });
